@@ -1,0 +1,171 @@
+---
+title: "Stats Modeling in R: Week 1"
+author: "S.Kelly"
+format: 
+  revealjs: 
+    code-overflow: wrap
+    footer: "S.Kelly | Stats Modeling in R | Fall 2025"
+editor: visual
+execute: 
+  echo: true
+---
+
+## Why Statistics in R?
+
+Reproducible and Shareable Code! Look under the hood!
+
+![SPSS](images/SPSS.png){fig-align="left" width="500"}
+
+## Why Statistics in R?
+
+It's free! You don't need a subscription.
+
+![SAS](images/SAS.png){width="500"}  ![Stata](images/Stata.png){width="500"}
+
+## What is linear regression?
+
+### insert image of scatterplot with reg line
+
+## Linear Regression in R
+
+Today we're going to use a dataset from `Multilevel Modeling Using R` by Finch and Bolin. You can access the `Cassady` data from [www.mlminr.com.](https://www.mlminr.com/data-sets)
+
+![](images/MLMBook.png)
+
+## Let's read in a csv file
+
+```{r}
+#| echo: TRUE
+# install.packages("tidyverse")
+# turn on the tidyverse for data import
+library(tidyverse)
+```
+
+```{r}
+#| echo: TRUE
+students <- read_csv("data/cassady_finch_bolin.csv")
+head(students, 4)
+```
+
+## Linear Regression
+
+>Is there a relationship between physical and cognitive academic anxiety (CTA.tot) and GPA? 
+
+Let's run a few quick correlation coefficients (standardized covariation). 
+
+There are several ways to run correlations in R. Base R has the `cor()` function. The default method is Pearson's Correlation Coefficient. 
+
+```{r}
+cor(students$GPA, students$CTA.tot, use = "pairwise.complete.obs") 
+cor(students$GPA, students$BStotal, use = "pairwise.complete.obs") 
+```
+
+## Linear Regression
+
+Let's look at the relationshp between cognitive academic anxiety and GPA. 
+
+What's wrong with this scatterplot? 
+```{r}
+ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point()
+```
+
+## Linear Regression
+
+A quick change to the range of the y-axis and you can see the relationship between variables. 
+
+```{r}
+ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point() + ylim(0, 4)
+```
+
+## Linear Regression
+
+Let's look at the relationshp between physical anxiety and GPA. 
+
+```{r}
+ggplot(students, aes(x = BStotal, y = GPA)) + geom_point() + ylim(0,4)
+```
+
+## Thinking about Outliers
+
+Who is this wacky outlier that keeps showing up in my plots?
+
+```{r}
+ggplot(students, aes(x = BStotal, y = GPA)) + geom_point() + ylim(0,4)
+```
+
+```{r}
+students |> 
+  select(Gender:GPA, BStotal:CTA.tot) |> 
+  filter(GPA < 1) 
+```
+
+## Thinking about Outliers
+
+Let's only retain people who have a GPA between 1 and 4. This will also exclude NAs. 
+```{r}
+students_no_outlier <- students |>  
+  filter(GPA > 1 | GPA < 4) 
+
+dim(students)
+dim(students_no_outlier)
+```
+
+## Linear Regression in R
+
+How do we write a regression formula in R?
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+model <- lm(outcome ~ predictor + predictor, data = )
+
+# this will create a lm "class" object
+```
+
+## Linear Regression in R
+
+>Is there a relationship between physical and cognitive academic anxiety (CTA.tot) and GPA? 
+
+```{r}
+model_gpa_anxiety <- lm(GPA ~ CTA.tot + BStotal, data = students)
+
+# this will create a lm "class" object in your environment
+```
+
+## Linear Regression in R
+
+What does this all mean?
+```{r}
+summary(model_gpa_anxiety)
+```
+
+
+## What can I pull out of a lm class object?
+
+-   coefficients - vector of coefficients
+
+-   residuals - outcome minus the fitted values; model\$residuals
+
+-   fitted.values - fitted mean values; model\$fitted.values
+
+-   You can see this if you call attributes(model)
+
+## Expand on this
+
+```{r}
+attributes(model_gpa_anxiety)
+```
+
+```{r}
+confint(model_gpa_anxiety)
+```
+
+## Expand on this
+
+```{r}
+plot(resid(model_gpa_anxiety))
+```
+
+## What about categorical predictors?
+
+## What if I want to scale / z-score my predictors? 
