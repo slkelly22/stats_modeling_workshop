@@ -412,9 +412,14 @@ S.Kelly
 <p>It’s free! You don’t need a subscription.</p>
 <p><img data-src="images/SAS.png" width="500" alt="SAS"> &nbsp;<img data-src="images/Stata.png" width="500" alt="Stata"></p>
 </section>
-<section id="what-is-linear-regression" class="slide level2">
-<h2>What is linear regression?</h2>
-<h3 id="insert-image-of-scatterplot-with-reg-line">insert image of scatterplot with reg line</h3>
+<section id="linear-regression-foundations" class="slide level2">
+<h2>Linear Regression Foundations</h2>
+<ol type="1">
+<li>Continuous outcome (Y) variable with a relatively normal distribution</li>
+<li>We are modeling a linear relationship between X and Y</li>
+<li>The residuals should be independent (no clustering!)</li>
+<li></li>
+</ol>
 </section>
 <section id="linear-regression-in-r" class="slide level2">
 <h2>Linear Regression in R</h2>
@@ -468,10 +473,11 @@ S.Kelly
 </section>
 <section id="linear-regression-1" class="slide level2">
 <h2>Linear Regression</h2>
-<p>Let’s look at the relationshp between cognitive academic anxiety and GPA.</p>
+<p>Let’s look at the relationship between cognitive academic anxiety and GPA.</p>
 <p>What’s wrong with this scatterplot?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">ggplot</span>(students, <span class="fu">aes</span>(<span class="at">x =</span> CTA.tot, <span class="at">y =</span> GPA)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">ggplot</span>(students, <span class="fu">aes</span>(<span class="at">x =</span> CTA.tot, <span class="at">y =</span> GPA)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb8-2"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
@@ -479,7 +485,8 @@ S.Kelly
 <h2>Linear Regression</h2>
 <p>A quick change to the range of the y-axis and you can see the relationship between variables.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">ggplot</span>(students, <span class="fu">aes</span>(<span class="at">x =</span> CTA.tot, <span class="at">y =</span> GPA)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">ggplot</span>(students, <span class="fu">aes</span>(<span class="at">x =</span> CTA.tot, <span class="at">y =</span> GPA)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb9-2"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
@@ -487,7 +494,8 @@ S.Kelly
 <h2>Linear Regression</h2>
 <p>Let’s look at the relationshp between physical anxiety and GPA.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">ggplot</span>(students, <span class="fu">aes</span>(<span class="at">x =</span> BStotal, <span class="at">y =</span> GPA)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">ggplot</span>(students, <span class="fu">aes</span>(<span class="at">x =</span> BStotal, <span class="at">y =</span> GPA)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb10-2"><a href=""></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
@@ -586,8 +594,17 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section>
 <section id="obtaining-confidence-intervals" class="slide level2">
 <h2>Obtaining Confidence Intervals</h2>
+<p>Reviewing the coefficients</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="fu">confint</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>model_gpa_anxiety<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     CTA.tot     BStotal 
+ 3.61892352 -0.02006778  0.01346885 </code></pre>
+</div>
+</div>
+<p>Confidence Intervals Function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="fu">confint</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   2.5 %      97.5 %
 (Intercept)  3.463045744  3.77480130
@@ -596,58 +613,11 @@ BStotal      0.003489506  0.02344819</code></pre>
 </div>
 </div>
 </section>
-<section id="checking-for-model-outliers" class="slide level2">
-<h2>Checking for Model Outliers</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>car<span class="sc">::</span><span class="fu">influenceIndexPlot</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-</div>
-<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
-<section id="checking-for-model-outliers-1" class="slide level2">
-<h2>Checking for Model Outliers</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>car<span class="sc">::</span><span class="fu">outlierTest</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     rstudent unadjusted p-value Bonferroni p
-226 -6.479315         2.5546e-10   1.0959e-07</code></pre>
-</div>
-</div>
-<h3 id="who-is-226">Who is 226?</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>whoisit <span class="ot">&lt;-</span> students <span class="sc">|&gt;</span> </span>
-<span id="cb26-2"><a href=""></a>  <span class="fu">select</span>(Gender<span class="sc">:</span>GPA, BStotal, CTA.tot) <span class="sc">|&gt;</span> </span>
-<span id="cb26-3"><a href=""></a>  <span class="fu">slice</span>(<span class="dv">226</span>)</span>
-<span id="cb26-4"><a href=""></a></span>
-<span id="cb26-5"><a href=""></a>whoisit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 7
-  Gender  Male Minority   Age   GPA BStotal CTA.tot
-   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-1      1     0        1    18     0      25      48</code></pre>
-</div>
-</div>
-</section>
-<section id="what-can-i-pull-from-the-model" class="slide level2">
-<h2>What can I pull from the model?</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">attributes</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>$names
- [1] "coefficients"  "residuals"     "effects"       "rank"         
- [5] "fitted.values" "assign"        "qr"            "df.residual"  
- [9] "na.action"     "xlevels"       "call"          "terms"        
-[13] "model"        
-
-$class
-[1] "lm"</code></pre>
-</div>
-</div>
-</section>
 <section id="predicted-outcomes" class="slide level2">
 <h2>Predicted Outcomes</h2>
 <p>Can I grab the predicted individual GPAs from the model? Yes you can.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>model_gpa_anxiety<span class="sc">$</span>fitted.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>model_gpa_anxiety<span class="sc">$</span>fitted.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       1        3        4        5        8        9       10       11 
 2.964641 3.125996 3.039668 3.125454 2.852730 3.152391 3.412460 3.011917 
@@ -760,25 +730,63 @@ $class
 </div>
 </div>
 </section>
+<section id="can-i-plot-the-predicted-gpas" class="slide level2">
+<h2>Can I plot the predicted GPAs?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">plot</span>(model_gpa_anxiety<span class="sc">$</span>fitted.values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
 <section id="lets-take-a-look-at-the-residuals" class="slide level2">
 <h2>Let’s take a look at the residuals</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">plot</span>(<span class="fu">resid</span>(model_gpa_anxiety))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">plot</span>(<span class="fu">resid</span>(model_gpa_anxiety))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
+<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
+<section id="checking-for-model-outliers" class="slide level2">
+<h2>Checking for Model Outliers</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>car<span class="sc">::</span><span class="fu">influenceIndexPlot</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
+<section id="checking-for-model-outliers-1" class="slide level2">
+<h2>Checking for Model Outliers</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>car<span class="sc">::</span><span class="fu">outlierTest</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     rstudent unadjusted p-value Bonferroni p
+226 -6.479315         2.5546e-10   1.0959e-07</code></pre>
+</div>
+</div>
+<h3 id="who-is-226">Who is 226?</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a>whoisit <span class="ot">&lt;-</span> students <span class="sc">|&gt;</span> </span>
+<span id="cb32-2"><a href=""></a>  <span class="fu">select</span>(Gender<span class="sc">:</span>GPA, BStotal, CTA.tot) <span class="sc">|&gt;</span> </span>
+<span id="cb32-3"><a href=""></a>  <span class="fu">slice</span>(<span class="dv">226</span>)</span>
+<span id="cb32-4"><a href=""></a></span>
+<span id="cb32-5"><a href=""></a>whoisit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 7
+  Gender  Male Minority   Age   GPA BStotal CTA.tot
+   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1      1     0        1    18     0      25      48</code></pre>
+</div>
+</div>
+</section>
 <section id="what-if-we-had-removed-the-outlier" class="slide level2">
 <h2>What if we had removed the outlier?</h2>
 <p>Let’s only retain people who have a GPA between 1 and 4. By default, the NAs also drop.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>students_no_outlier <span class="ot">&lt;-</span> students <span class="sc">|&gt;</span>  </span>
-<span id="cb33-2"><a href=""></a>  <span class="fu">filter</span>(GPA <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> GPA <span class="sc">&lt;</span> <span class="dv">4</span>) </span>
-<span id="cb33-3"><a href=""></a></span>
-<span id="cb33-4"><a href=""></a><span class="fu">dim</span>(students)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>students_no_outlier <span class="ot">&lt;-</span> students <span class="sc">|&gt;</span>  </span>
+<span id="cb34-2"><a href=""></a>  <span class="fu">filter</span>(GPA <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> GPA <span class="sc">&lt;</span> <span class="dv">4</span>) </span>
+<span id="cb34-3"><a href=""></a></span>
+<span id="cb34-4"><a href=""></a><span class="fu">dim</span>(students)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 486  30</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="fu">dim</span>(students_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">dim</span>(students_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 460  30</code></pre>
 </div>
@@ -787,10 +795,10 @@ $class
 <section id="model-again" class="slide level2">
 <h2>Model Again</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>model_gpa_anxiety_no_outlier <span class="ot">&lt;-</span> <span class="fu">lm</span>(GPA <span class="sc">~</span> CTA.tot <span class="sc">+</span> BStotal, </span>
-<span id="cb37-2"><a href=""></a>                                   <span class="at">data =</span> students_no_outlier)</span>
-<span id="cb37-3"><a href=""></a></span>
-<span id="cb37-4"><a href=""></a><span class="fu">summary</span>(model_gpa_anxiety_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>model_gpa_anxiety_no_outlier <span class="ot">&lt;-</span> <span class="fu">lm</span>(GPA <span class="sc">~</span> CTA.tot <span class="sc">+</span> BStotal, </span>
+<span id="cb38-2"><a href=""></a>                                   <span class="at">data =</span> students_no_outlier)</span>
+<span id="cb38-3"><a href=""></a></span>
+<span id="cb38-4"><a href=""></a><span class="fu">summary</span>(model_gpa_anxiety_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -818,7 +826,7 @@ F-statistic: 23.65 on 2 and 420 DF,  p-value: 1.856e-10</code></pre>
 <section id="outliers-now" class="slide level2">
 <h2>Outliers Now?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>car<span class="sc">::</span><span class="fu">outlierTest</span>(model_gpa_anxiety_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a>car<span class="sc">::</span><span class="fu">outlierTest</span>(model_gpa_anxiety_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>No Studentized residuals with Bonferroni p &lt; 0.05
 Largest |rstudent|:
@@ -830,16 +838,21 @@ Largest |rstudent|:
 <section id="plot" class="slide level2">
 <h2>Plot</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>car<span class="sc">::</span><span class="fu">influenceIndexPlot</span>(model_gpa_anxiety_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a>car<span class="sc">::</span><span class="fu">influenceIndexPlot</span>(model_gpa_anxiety_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
-<section id="what-about-categorical-predictors" class="slide level2">
-<h2>What about categorical predictors?</h2>
+<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+<section id="next-week-more-regression-modeling" class="slide level2">
+<h2>Next Week: More Regression Modeling</h2>
+<h3 id="what-if-you-want-to-model-an-interaction-you-can">- What if you want to model an interaction? <em>You can</em></h3>
+<h3 id="what-if-you-have-categorical-predictors-factors">- What if you have categorical predictors? <em>Factors</em></h3>
+<h3 id="what-if-you-need-to-model-a-binary-outcome-logistic-regression">- What if you need to model a binary outcome? <em>Logistic Regression</em></h3>
 </section>
-<section id="what-if-i-want-to-scale-z-score-my-predictors" class="slide level2">
-<h2>What if I want to scale / z-score my predictors?</h2>
-<div class="quarto-auto-generated-content">
+<section id="additional-questions" class="slide level2">
+<h2>Additional Questions?</h2>
+<p>Make an Appointment with the <a href="https://libraries.olemiss.edu/services/methods-and-analysis-lab/">Methods and Analysis Lab (MAL)</a>.</p>
+
+<img data-src="images/MAL_services.png" class="quarto-figure quarto-figure-center r-stretch"><div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>S.Kelly | Stats Modeling in R | Fall 2025</p>
 </div>
