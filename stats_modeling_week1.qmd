@@ -93,22 +93,16 @@ Who is this wacky outlier that keeps showing up in my plots?
 ggplot(students, aes(x = BStotal, y = GPA)) + geom_point() + ylim(0,4)
 ```
 
+## Thinking about Outliers
+
+Who is this wacky outlier that keeps showing up in my plots?
+
 ```{r}
 students |> 
   select(Gender:GPA, BStotal:CTA.tot) |> 
   filter(GPA < 1) 
 ```
 
-## Thinking about Outliers
-
-Let's only retain people who have a GPA between 1 and 4. This will also exclude NAs. 
-```{r}
-students_no_outlier <- students |>  
-  filter(GPA > 1 | GPA < 4) 
-
-dim(students)
-dim(students_no_outlier)
-```
 
 ## Linear Regression in R
 
@@ -130,6 +124,7 @@ model <- lm(outcome ~ predictor + predictor, data = )
 model_gpa_anxiety <- lm(GPA ~ CTA.tot + BStotal, data = students)
 
 # this will create a lm "class" object in your environment
+class(model_gpa_anxiety)
 ```
 
 ## Linear Regression in R
@@ -139,32 +134,92 @@ What does this all mean?
 summary(model_gpa_anxiety)
 ```
 
-
-## What can I pull out of a lm class object?
-
--   coefficients - vector of coefficients
-
--   residuals - outcome minus the fitted values; model\$residuals
-
--   fitted.values - fitted mean values; model\$fitted.values
-
--   You can see this if you call attributes(model)
-
-## Expand on this
+## Breaking Down the Variance
 
 ```{r}
-attributes(model_gpa_anxiety)
+anova(model_gpa_anxiety)
 ```
+
+## Obtaining Confidence Intervals
 
 ```{r}
 confint(model_gpa_anxiety)
 ```
 
-## Expand on this
+## Checking for Model Outliers
+
+```{r}
+car::influenceIndexPlot(model_gpa_anxiety)
+```
+
+## Checking for Model Outliers
+
+```{r}
+car::outlierTest(model_gpa_anxiety)
+```
+
+### Who is 226? 
+```{r}
+whoisit <- students |> 
+  select(Gender:GPA, BStotal, CTA.tot) |> 
+  slice(226)
+
+whoisit
+```
+
+## What can I pull from the model? 
+
+```{r}
+attributes(model_gpa_anxiety)
+```
+
+## Predicted Outcomes
+
+Can I grab the predicted individual GPAs from the model? Yes you can. 
+
+```{r}
+model_gpa_anxiety$fitted.values
+```
+
+## Let's take a look at the residuals
 
 ```{r}
 plot(resid(model_gpa_anxiety))
 ```
+
+## What if we had removed the outlier?
+
+Let's only retain people who have a GPA between 1 and 4. By default, the NAs also drop. 
+```{r}
+students_no_outlier <- students |>  
+  filter(GPA > 1 & GPA < 4) 
+
+dim(students)
+dim(students_no_outlier)
+```
+
+## Model Again
+
+```{r}
+model_gpa_anxiety_no_outlier <- lm(GPA ~ CTA.tot + BStotal, 
+                                   data = students_no_outlier)
+
+summary(model_gpa_anxiety_no_outlier)
+```
+
+## Outliers Now?
+
+```{r}
+car::outlierTest(model_gpa_anxiety_no_outlier)
+```
+
+## Plot
+```{r}
+car::influenceIndexPlot(model_gpa_anxiety_no_outlier)
+```
+
+
+
 
 ## What about categorical predictors?
 

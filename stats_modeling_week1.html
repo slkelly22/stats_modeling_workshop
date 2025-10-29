@@ -498,7 +498,11 @@ S.Kelly
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">ggplot</span>(students, <span class="fu">aes</span>(<span class="at">x =</span> BStotal, <span class="at">y =</span> GPA)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"><div class="cell">
+<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<section id="thinking-about-outliers-1" class="slide level2">
+<h2>Thinking about Outliers</h2>
+<p>Who is this wacky outlier that keeps showing up in my plots?</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>students <span class="sc">|&gt;</span> </span>
 <span id="cb12-2"><a href=""></a>  <span class="fu">select</span>(Gender<span class="sc">:</span>GPA, BStotal<span class="sc">:</span>CTA.tot) <span class="sc">|&gt;</span> </span>
 <span id="cb12-3"><a href=""></a>  <span class="fu">filter</span>(GPA <span class="sc">&lt;</span> <span class="dv">1</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -510,30 +514,13 @@ S.Kelly
 </div>
 </div>
 </section>
-<section id="thinking-about-outliers-1" class="slide level2">
-<h2>Thinking about Outliers</h2>
-<p>Let’s only retain people who have a GPA between 1 and 4. This will also exclude NAs.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>students_no_outlier <span class="ot">&lt;-</span> students <span class="sc">|&gt;</span>  </span>
-<span id="cb14-2"><a href=""></a>  <span class="fu">filter</span>(GPA <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">|</span> GPA <span class="sc">&lt;</span> <span class="dv">4</span>) </span>
-<span id="cb14-3"><a href=""></a></span>
-<span id="cb14-4"><a href=""></a><span class="fu">dim</span>(students)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 486  30</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">dim</span>(students_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 467  30</code></pre>
-</div>
-</div>
-</section>
 <section id="linear-regression-in-r-1" class="slide level2">
 <h2>Linear Regression in R</h2>
 <p>How do we write a regression formula in R?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(outcome <span class="sc">~</span> predictor <span class="sc">+</span> predictor, <span class="at">data =</span> )</span>
-<span id="cb18-2"><a href=""></a></span>
-<span id="cb18-3"><a href=""></a><span class="co"># this will create a lm "class" object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(outcome <span class="sc">~</span> predictor <span class="sc">+</span> predictor, <span class="at">data =</span> )</span>
+<span id="cb14-2"><a href=""></a></span>
+<span id="cb14-3"><a href=""></a><span class="co"># this will create a lm "class" object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="linear-regression-in-r-2" class="slide level2">
@@ -542,16 +529,20 @@ S.Kelly
 <p>Is there a relationship between physical and cognitive academic anxiety (CTA.tot) and GPA?</p>
 </blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a>model_gpa_anxiety <span class="ot">&lt;-</span> <span class="fu">lm</span>(GPA <span class="sc">~</span> CTA.tot <span class="sc">+</span> BStotal, <span class="at">data =</span> students)</span>
-<span id="cb19-2"><a href=""></a></span>
-<span id="cb19-3"><a href=""></a><span class="co"># this will create a lm "class" object in your environment</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>model_gpa_anxiety <span class="ot">&lt;-</span> <span class="fu">lm</span>(GPA <span class="sc">~</span> CTA.tot <span class="sc">+</span> BStotal, <span class="at">data =</span> students)</span>
+<span id="cb15-2"><a href=""></a></span>
+<span id="cb15-3"><a href=""></a><span class="co"># this will create a lm "class" object in your environment</span></span>
+<span id="cb15-4"><a href=""></a><span class="fu">class</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "lm"</code></pre>
+</div>
 </div>
 </section>
 <section id="linear-regression-in-r-3" class="slide level2">
 <h2>Linear Regression in R</h2>
 <p>What does this all mean?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">summary</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">summary</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -576,19 +567,70 @@ F-statistic: 25.43 on 2 and 426 DF,  p-value: 3.706e-11</code></pre>
 </div>
 </div>
 </section>
-<section id="what-can-i-pull-out-of-a-lm-class-object" class="slide level2">
-<h2>What can I pull out of a lm class object?</h2>
-<ul>
-<li><p>coefficients - vector of coefficients</p></li>
-<li><p>residuals - outcome minus the fitted values; model$residuals</p></li>
-<li><p>fitted.values - fitted mean values; model$fitted.values</p></li>
-<li><p>You can see this if you call attributes(model)</p></li>
-</ul>
-</section>
-<section id="expand-on-this" class="slide level2">
-<h2>Expand on this</h2>
+<section id="breaking-down-the-variance" class="slide level2">
+<h2>Breaking Down the Variance</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">attributes</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">anova</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: GPA
+           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+CTA.tot     1  10.316 10.3159 43.8125 1.089e-10 ***
+BStotal     1   1.657  1.6570  7.0376   0.00828 ** 
+Residuals 426 100.304  0.2355                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</section>
+<section id="obtaining-confidence-intervals" class="slide level2">
+<h2>Obtaining Confidence Intervals</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="fu">confint</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   2.5 %      97.5 %
+(Intercept)  3.463045744  3.77480130
+CTA.tot     -0.026092170 -0.01404339
+BStotal      0.003489506  0.02344819</code></pre>
+</div>
+</div>
+</section>
+<section id="checking-for-model-outliers" class="slide level2">
+<h2>Checking for Model Outliers</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>car<span class="sc">::</span><span class="fu">influenceIndexPlot</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<section id="checking-for-model-outliers-1" class="slide level2">
+<h2>Checking for Model Outliers</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>car<span class="sc">::</span><span class="fu">outlierTest</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     rstudent unadjusted p-value Bonferroni p
+226 -6.479315         2.5546e-10   1.0959e-07</code></pre>
+</div>
+</div>
+<h3 id="who-is-226">Who is 226?</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>whoisit <span class="ot">&lt;-</span> students <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href=""></a>  <span class="fu">select</span>(Gender<span class="sc">:</span>GPA, BStotal, CTA.tot) <span class="sc">|&gt;</span> </span>
+<span id="cb26-3"><a href=""></a>  <span class="fu">slice</span>(<span class="dv">226</span>)</span>
+<span id="cb26-4"><a href=""></a></span>
+<span id="cb26-5"><a href=""></a>whoisit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 7
+  Gender  Male Minority   Age   GPA BStotal CTA.tot
+   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1      1     0        1    18     0      25      48</code></pre>
+</div>
+</div>
+</section>
+<section id="what-can-i-pull-from-the-model" class="slide level2">
+<h2>What can I pull from the model?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">attributes</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$names
  [1] "coefficients"  "residuals"     "effects"       "rank"         
@@ -600,23 +642,198 @@ $class
 [1] "lm"</code></pre>
 </div>
 </div>
+</section>
+<section id="predicted-outcomes" class="slide level2">
+<h2>Predicted Outcomes</h2>
+<p>Can I grab the predicted individual GPAs from the model? Yes you can.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">confint</span>(model_gpa_anxiety)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>model_gpa_anxiety<span class="sc">$</span>fitted.values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                   2.5 %      97.5 %
-(Intercept)  3.463045744  3.77480130
-CTA.tot     -0.026092170 -0.01404339
-BStotal      0.003489506  0.02344819</code></pre>
+<pre><code>       1        3        4        5        8        9       10       11 
+2.964641 3.125996 3.039668 3.125454 2.852730 3.152391 3.412460 3.011917 
+      12       13       14       15       16       17       19       23 
+2.611103 3.158448 3.298923 3.312121 2.959938 3.205183 2.945928 2.904979 
+      25       26       27       28       29       30       31       34 
+3.226064 3.245318 2.944573 3.171646 2.917635 3.198584 3.206267 3.073204 
+      35       37       38       39       41       42       43       44 
+3.258787 3.118584 2.972594 2.870630 3.144980 3.285454 3.386064 2.871713 
+      45       46       48       50       51       52       53       54 
+2.911849 3.166131 3.051511 3.251917 3.080345 3.131782 3.292053 3.138923 
+      55       56       57       58       59       60       61       62 
+3.372324 3.372324 3.065521 3.212324 3.325590 3.093543 3.172459 2.918177 
+      63       65       66       67       68       69       70       71 
+3.104844 2.985250 3.225251 3.245318 3.151849 2.937703 2.978109 3.058651 
+      72       73       74       75       76       77       79       80 
+2.852188 3.011375 3.225251 3.253272 3.118313 3.292053 2.664979 2.998448 
+      81       83       84       86       87       88       89       90 
+2.878041 2.737025 3.185928 3.232121 3.225793 3.106199 2.885995 2.978380 
+      91       92       93       94       95       96       97       99 
+3.231850 3.111443 3.292053 2.924505 3.266741 3.192256 3.012730 3.053407 
+     100      101      102      103      104      106      107      108 
+3.119126 3.053949 3.044912 2.997906 3.327757 3.058651 3.098245 2.985792 
+     109      111      112      113      114      117      118      119 
+3.486674 2.898109 3.211782 3.185115 3.225793 3.199939 2.891781 3.191714 
+     120      121      122      123      124      125      126      127 
+3.298923 3.118313 2.885453 3.091375 2.898651 3.118313 2.818922 3.019058 
+     128      129      130      131      132      133      134      135 
+3.032256 2.937703 3.246673 3.084776 2.924234 2.797499 3.078448 2.891781 
+     136      137      138      139      140      141      142      143 
+2.784843 2.925047 3.232121 3.158448 2.697160 2.978109 2.991578 2.965995 
+     144      145      147      148      149      150      151      152 
+2.712255 2.924505 2.985521 3.139194 3.104844 3.111443 3.011104 2.817567 
+     153      155      156      158      161      162      163      164 
+3.286538 3.366267 3.139194 3.091375 2.783759 3.271985 3.171917 3.265657 
+     165      166      167      168      169      171      172      174 
+2.925047 2.985250 2.965453 3.104844 3.392392 3.131511 3.078448 3.205996 
+     175      176      177      178      179      180      181      182 
+2.851646 3.073204 2.851375 2.964641 3.231850 3.292053 3.332460 2.980277 
+     183      185      186      187      188      189      190      191 
+3.167215 2.737838 3.185115 3.118855 2.831307 3.004776 3.225793 3.231850 
+     192      193      195      196      197      198      199      200 
+3.266199 3.111443 3.138652 3.040210 2.897838 3.144980 3.059464 3.332189 
+     202      203      204      205      207      209      210      213 
+3.219194 2.892865 3.231850 3.058110 3.232392 3.205725 2.777973 3.132866 
+     214      215      216      217      218      219      220      221 
+3.178516 3.238720 2.851104 3.171646 3.004505 3.251917 3.018787 2.925318 
+     222      223      224      225      226      227      228      229 
+3.265386 2.991307 3.098787 3.126267 2.992391 3.151849 3.031172 3.025386 
+     230      231      232      233      234      235      236      237 
+3.252188 3.158448 2.890968 3.426470 3.165047 2.925589 3.251917 3.225251 
+     238      239      240      241      242      243      244      245 
+3.126267 3.191714 3.118313 2.957771 2.906063 3.258787 3.051511 2.972323 
+     246      247      248      250      251      252      253      254 
+3.225251 3.151579 3.024573 3.365725 3.132053 2.911849 2.884369 3.252188 
+     255      257      258      259      260      261      262      263 
+3.158448 2.818651 3.005318 3.112527 3.131782 3.225251 3.151579 3.205183 
+     264      265      266      267      268      269      270      271 
+3.144980 3.125454 3.118584 3.238720 3.360210 2.984708 3.178787 2.811239 
+     272      273      274      275      276      277      279      280 
+3.151579 3.205183 3.118313 3.365725 3.219465 3.278855 2.930833 3.004505 
+     281      282      283      286      287      289      290      291 
+2.972052 3.111443 3.118313 3.238720 2.924234 3.312121 3.292053 3.038042 
+     292      293      294      295      296      297      298      299 
+3.118313 2.803827 3.265657 3.192527 3.392392 2.777973 3.145792 3.105386 
+     300      301      302      303      304      305      306      307 
+3.158448 3.086131 3.105386 3.271985 2.958854 2.931917 3.185928 3.158719 
+     308      309      310      311      312      313      315      316 
+3.071307 3.011375 3.238991 3.238720 3.353069 2.944302 3.085047 3.392392 
+     317      318      319      320      321      323      324      325 
+3.245589 3.171917 2.792526 3.125725 3.278855 3.259058 2.951172 2.817296 
+     326      327      328      329      330      331      332      333 
+3.251917 3.111443 3.091917 3.234017 3.292053 3.285454 3.119126 3.231850 
+     334      335      336      337      338      340      341      342 
+2.811239 3.305522 3.205183 3.212324 2.892323 3.165860 2.804640 3.386064 
+     343      344      345      346      347      348      349      350 
+3.099329 3.399533 3.252188 3.091375 3.359126 2.838990 3.399533 3.392392 
+     351      352      353      354      355      356      357      358 
+3.285454 3.392392 3.385793 3.098245 3.279397 3.018245 3.078448 3.372324 
+     360      362      363      364      365      367      369      370 
+3.120210 3.251917 3.285725 3.111714 3.392663 3.339058 3.078448 3.191985 
+     371      372      373      374      375      376      377      378 
+3.104844 3.231850 3.245318 2.730426 3.205725 3.245589 3.225251 3.025115 
+     379      380      382      384      385      386      387      388 
+3.285725 3.064979 2.978109 2.977838 3.219465 3.138381 3.059193 2.992933 
+     389      390      391      392      394      395      396      397 
+3.078177 2.958042 3.211782 2.998448 2.830494 3.131511 3.500414 3.379194 
+     398      399      400      401      402      403      404      405 
+3.385793 3.172188 3.138652 3.386064 3.085589 3.005589 3.259600 3.352256 
+     406      407      408      409      410      411      412      413 
+3.118584 3.372324 3.085047 3.191985 3.285454 3.312392 3.231850 3.159803 
+     414      415      416      417      418      419      420      421 
+3.191714 3.258787 2.944573 3.124912 3.105115 3.211782 3.278855 3.399262 
+     422      423      424      425      426      427      428      429 
+3.051240 3.025115 2.959396 3.199668 3.258787 3.266199 3.238720 3.392392 
+     430      431      432      433      434      435      436      437 
+3.305522 3.178516 3.312121 3.238720 3.198584 3.272256 3.292053 3.206267 
+     438      439      440      441      442      445      446      447 
+3.179329 3.365725 3.292053 3.372324 3.345657 3.158990 3.131511 3.071307 
+     448      449      450      451      452      453      454      455 
+3.305793 3.171646 3.312121 3.071307 3.065521 3.339058 3.113069 3.426200 
+     456      457      458      459      460      461      462      463 
+2.925860 3.231850 3.251917 2.984437 3.312392 2.931375 3.392392 3.379194 
+     464      465      466      467      468      469      470      471 
+3.447080 3.198855 3.392392 3.379465 3.205454 3.412460 3.225251 3.305522 
+     472      473      475      476      477      478      479      480 
+3.091375 3.392392 3.024573 3.318991 3.392392 3.425929 3.386064 3.459736 
+     481      482      483      484      485 
+3.199397 3.312121 3.192256 2.864031 3.245318 </code></pre>
 </div>
 </div>
 </section>
-<section id="expand-on-this-1" class="slide level2">
-<h2>Expand on this</h2>
+<section id="lets-take-a-look-at-the-residuals" class="slide level2">
+<h2>Let’s take a look at the residuals</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="fu">plot</span>(<span class="fu">resid</span>(model_gpa_anxiety))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">plot</span>(<span class="fu">resid</span>(model_gpa_anxiety))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
+<section id="what-if-we-had-removed-the-outlier" class="slide level2">
+<h2>What if we had removed the outlier?</h2>
+<p>Let’s only retain people who have a GPA between 1 and 4. By default, the NAs also drop.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>students_no_outlier <span class="ot">&lt;-</span> students <span class="sc">|&gt;</span>  </span>
+<span id="cb33-2"><a href=""></a>  <span class="fu">filter</span>(GPA <span class="sc">&gt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> GPA <span class="sc">&lt;</span> <span class="dv">4</span>) </span>
+<span id="cb33-3"><a href=""></a></span>
+<span id="cb33-4"><a href=""></a><span class="fu">dim</span>(students)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 486  30</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a><span class="fu">dim</span>(students_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 460  30</code></pre>
+</div>
+</div>
+</section>
+<section id="model-again" class="slide level2">
+<h2>Model Again</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>model_gpa_anxiety_no_outlier <span class="ot">&lt;-</span> <span class="fu">lm</span>(GPA <span class="sc">~</span> CTA.tot <span class="sc">+</span> BStotal, </span>
+<span id="cb37-2"><a href=""></a>                                   <span class="at">data =</span> students_no_outlier)</span>
+<span id="cb37-3"><a href=""></a></span>
+<span id="cb37-4"><a href=""></a><span class="fu">summary</span>(model_gpa_anxiety_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = GPA ~ CTA.tot + BStotal, data = students_no_outlier)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.4724 -0.2895  0.0119  0.3595  0.9134 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  3.565392   0.075943  46.948  &lt; 2e-16 ***
+CTA.tot     -0.018915   0.002919  -6.480 2.58e-10 ***
+BStotal      0.014209   0.004815   2.951  0.00334 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.4596 on 420 degrees of freedom
+  (37 observations deleted due to missingness)
+Multiple R-squared:  0.1012,    Adjusted R-squared:  0.09693 
+F-statistic: 23.65 on 2 and 420 DF,  p-value: 1.856e-10</code></pre>
+</div>
+</div>
+</section>
+<section id="outliers-now" class="slide level2">
+<h2>Outliers Now?</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>car<span class="sc">::</span><span class="fu">outlierTest</span>(model_gpa_anxiety_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>No Studentized residuals with Bonferroni p &lt; 0.05
+Largest |rstudent|:
+     rstudent unadjusted p-value Bonferroni p
+276 -3.248865           0.001252       0.5296</code></pre>
+</div>
+</div>
+</section>
+<section id="plot" class="slide level2">
+<h2>Plot</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>car<span class="sc">::</span><span class="fu">influenceIndexPlot</span>(model_gpa_anxiety_no_outlier)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="stats_modeling_week1_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
 <section id="what-about-categorical-predictors" class="slide level2">
 <h2>What about categorical predictors?</h2>
 </section>
