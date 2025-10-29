@@ -12,7 +12,9 @@ execute:
 
 ## Why Statistics in R?
 
-Reproducible and Shareable Code! Look under the hood!
+Code you can reproduce and share! 
+<br>
+Do you recall your analysis in SPSS?
 
 ![SPSS](images/SPSS.png){fig-align="left" width="500"}
 
@@ -22,12 +24,12 @@ It's free! You don't need a subscription.
 
 ![SAS](images/SAS.png){width="500"}  ![Stata](images/Stata.png){width="500"}
 
-## Linear Regression Foundations
+## Linear Regression Assumptions
 
-1.  Continuous outcome (Y) variable with a relatively normal distribution
+1.  Continuous outcome (Y) with a relatively normal distribution
 2.  We are modeling a linear relationship between X and Y
 3.  The residuals should be independent (no clustering!)
-4.  
+4.  The residual variance should be relatively equal (homoscedasticity)
 
 ## Linear Regression in R
 
@@ -40,7 +42,6 @@ Today we're going to use a dataset from `Multilevel Modeling Using R` by Finch a
 ```{r}
 #| echo: TRUE
 # install.packages("tidyverse")
-# turn on the tidyverse for data import
 library(tidyverse)
 ```
 
@@ -48,6 +49,15 @@ library(tidyverse)
 #| echo: TRUE
 students <- read_csv("data/cassady_finch_bolin.csv")
 head(students, 4)
+```
+
+## Outcome Variable
+
+Our outcome variable is GPA. This is what we want to model. Let's take a quick look at the distribution. 
+
+```{r}
+students |> 
+  ggplot(aes(x = GPA)) + geom_histogram() + xlim(1, 5)
 ```
 
 ## Linear Regression
@@ -70,8 +80,7 @@ Let's look at the relationship between cognitive academic anxiety and GPA.
 What's wrong with this scatterplot?
 
 ```{r}
-ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point() + 
-  geom_smooth(method = "lm")
+ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point()
 ```
 
 ## Linear Regression
@@ -91,6 +100,7 @@ Let's look at the relationshp between physical anxiety and GPA.
 ggplot(students, aes(x = BStotal, y = GPA)) + geom_point() + 
   geom_smooth(method = "lm") + ylim(0,4)
 ```
+
 
 ## Thinking about Outliers
 
