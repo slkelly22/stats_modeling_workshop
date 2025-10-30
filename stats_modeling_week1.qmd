@@ -24,10 +24,10 @@ It's free! You don't need a subscription.
 
 ![SAS](images/SAS.png){width="500"}  ![Stata](images/Stata.png){width="500"}
 
-## Linear Regression Assumptions
+## Linear Regression Considerations
 
 1.  Continuous outcome (Y) with a relatively normal distribution
-2.  We are modeling a linear relationship between X and Y
+2.  We are modeling a linear relationship between X and Y (linear in the parameters)
 3.  The residuals should be independent (no clustering!)
 4.  The residual variance should be relatively equal (homoscedasticity)
 
@@ -51,6 +51,12 @@ students <- read_csv("data/cassady_finch_bolin.csv")
 head(students, 4)
 ```
 
+## Quick Look at the Data
+
+```{r}
+summary(students)
+```
+
 ## Outcome Variable
 
 Our outcome variable is GPA. This is what we want to model. Let's take a quick look at the distribution. 
@@ -62,7 +68,7 @@ students |>
 
 ## Linear Regression
 
-> Is there a relationship between physical and cognitive academic anxiety (CTA.tot) and GPA?
+> Is there a relationship between physical (BStotal) and cognitive academic anxiety (CTA.tot) and GPA?
 
 Let's run a few quick correlation coefficients (standardized covariation).
 
@@ -134,7 +140,7 @@ model <- lm(outcome ~ predictor + predictor, data = )
 
 ## Linear Regression in R
 
-> Is there a relationship between physical and cognitive academic anxiety (CTA.tot) and GPA?
+> Is there a relationship between physical (BStotal) and cognitive academic anxiety (CTA.tot) and GPA?
 
 ```{r}
 model_gpa_anxiety <- lm(GPA ~ CTA.tot + BStotal, data = students)
