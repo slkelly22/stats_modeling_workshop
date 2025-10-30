@@ -12,9 +12,7 @@ execute:
 
 ## Why Statistics in R?
 
-Code you can reproduce and share! 
-<br>
-Do you recall your analysis in SPSS?
+Code you can reproduce and share! <br> Do you recall your analysis in SPSS?
 
 ![SPSS](images/SPSS.png){fig-align="left" width="500"}
 
@@ -59,7 +57,7 @@ summary(students)
 
 ## Outcome Variable
 
-Our outcome variable is GPA. This is what we want to model. Let's take a quick look at the distribution. 
+Our outcome variable is GPA. This is what we want to model. Let's take a quick look at the distribution.
 
 ```{r}
 students |> 
@@ -106,7 +104,6 @@ Let's look at the relationshp between physical anxiety and GPA.
 ggplot(students, aes(x = BStotal, y = GPA)) + geom_point() + 
   geom_smooth(method = "lm") + ylim(0,4)
 ```
-
 
 ## Thinking about Outliers
 
@@ -166,11 +163,13 @@ anova(model_gpa_anxiety)
 ## Obtaining Confidence Intervals
 
 Reviewing the coefficients
+
 ```{r}
 model_gpa_anxiety$coefficients
 ```
 
 Confidence Intervals Function
+
 ```{r}
 confint(model_gpa_anxiety)
 ```
@@ -183,7 +182,7 @@ Can I grab the predicted individual GPAs from the model? Yes you can.
 model_gpa_anxiety$fitted.values
 ```
 
-## Can I plot the predicted GPAs? 
+## Can I plot the predicted GPAs?
 
 ```{r}
 plot(model_gpa_anxiety$fitted.values)
