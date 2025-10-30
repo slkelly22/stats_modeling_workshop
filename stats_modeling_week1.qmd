@@ -41,7 +41,7 @@ Today we're going to use a dataset from `Multilevel Modeling Using R` by Finch a
 
 ```{r}
 #| echo: TRUE
-# install.packages("tidyverse")
+# install.packages("tidyverse", "car")
 library(tidyverse)
 ```
 
