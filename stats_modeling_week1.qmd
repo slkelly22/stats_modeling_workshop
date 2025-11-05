@@ -95,7 +95,7 @@ A quick change to the range of the y-axis and you can see the relationship betwe
 ggplot(students, aes(x = CTA.tot, y = GPA)) + geom_point() + 
   geom_smooth(method = "lm") + ylim(0, 4)
 ```
-
+   
 ## Linear Regression
 
 Let's look at the relationshp between physical anxiety and GPA.
