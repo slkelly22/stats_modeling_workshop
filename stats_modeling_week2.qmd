@@ -1,0 +1,219 @@
+---
+title: "Stats Modeling in R: Week 2"
+author: "S.Kelly"
+format: 
+  revealjs: 
+    code-overflow: wrap
+    footer: "S.Kelly | Stats Modeling in R | Fall 2025"
+editor: visual
+execute: 
+  echo: true
+---
+
+## Last Week's Dataset
+
+`Cassady` data from `Multilevel Modeling Using R` by Finch and Bolin. You can access the `Cassady` data from [www.mlminr.com.](https://www.mlminr.com/data-sets)
+
+![](images/MLMBook.png)
+
+## Let's read in the Cassady Data
+
+```{r}
+#| echo: TRUE
+# install.packages("tidyverse", "car")
+library(tidyverse)
+```
+
+```{r}
+#| echo: TRUE
+students <- read_csv("data/cassady_finch_bolin.csv")
+head(students, 4)
+```
+
+## Quick Look at the Data
+
+```{r}
+summary(students)
+```
+
+## Outcome Variable
+
+Our outcome variable is GPA. This is what we want to model. Let's take a quick look at the distribution.
+
+```{r}
+students |> 
+  ggplot(aes(x = GPA)) + geom_histogram() + xlim(1, 5)
+```
+
+## Last Week's Multiple Regression
+
+```{r}
+model_gpa_anxiety <- lm(GPA ~ CTA.tot + BStotal, data = students)
+summary(model_gpa_anxiety)
+```
+
+## How do we test an interaction in R?
+
+> Two different ways to set up the syntax:
+
+`variable1 + variable2 + variable1:variable2` explicitly requests main effects and the interaction
+
+`variable1` \* `variable2` interaction term with implied main effects
+
+## Let's add an interaction term
+
+```{r}
+model_gpa_anxiety2 <- lm(GPA ~ CTA.tot + BStotal + CTA.tot:BStotal, 
+                         data = students)
+summary(model_gpa_anxiety2)
+```
+
+## Let's compare models
+
+Is the model with the interaction term a better fit?
+
+```{r}
+anova(model_gpa_anxiety, model_gpa_anxiety2)
+```
+
+## What if it was significant?
+
+When the interaction is significant, you need to understand the coefficients in the context of that interaction.
+
+-   If categorical, create regression lines by group; easy to do in ggplot
+
+-   If continuous, you can calculate the predicted values of the outcome at particular values in the predictor
+
+-   For more details see the `interactions` and `emmeans` packages.
+
+## What about GPA by Gender?
+
+```{r}
+students |> 
+  ggplot(aes(x = GPA)) + geom_histogram() + xlim(1, 5) + 
+  facet_wrap(~ Gender)
+```
+
+## Categorical Predictors
+
+We used two continuous predictors last week, but how does R handle categorical predictors? Let's look at our data again.
+
+```{r}
+str(students)
+```
+
+## Categorical Predictors
+
+What does the gender variable currently look like?
+
+```{r}
+unique(students$Gender)
+```
+
+Not technically a categorical variable, but does that matter in the binary case?
+
+Let's just proceed and see what happens when we add this as a third variable to the model.
+
+```{r}
+model_gpa_anxiety_gender <- lm(GPA ~ CTA.tot + BStotal + Gender, 
+                               data = students)
+```
+
+## How to Interpret?
+
+In order to interpret, you must understand the raw data!
+
+```{r}
+summary(model_gpa_anxiety_gender)
+```
+
+## Setting a Factor
+
+Let's turn the `Gender` numeric variable into a factor so we can add labels and order
+
+```{r}
+students$gender_factor <- factor(students$Gender, 
+                                 levels = c(1, 2), 
+                                 labels = c("Female", "Male"))
+```
+
+Let's look at our new factor
+
+```{r}
+levels(students$gender_factor)
+```
+
+```{r}
+fct_count(students$gender_factor)
+```
+
+## With the new factor...
+
+```{r}
+model_gpa_anxiety_gender2 <- lm(GPA ~ CTA.tot + BStotal + gender_factor, 
+                               data = students)
+summary(model_gpa_anxiety_gender2)
+```
+
+## Make a new variable with three levels
+
+```{r}
+students <- students %>% 
+  mutate(adult_group = case_when(
+    Age <= 19 ~ "young",
+    Age > 19 & Age <= 21 ~ "mid",
+    Age > 21 ~ "older"))
+
+# How many of each?
+count(students,adult_group)
+```
+
+## But it's not a factor...
+
+```{r}
+str(students$adult_group)
+```
+
+## Let's model GPA anyway...
+
+```{r}
+GPA_adult <- lm(GPA ~ adult_group, data = students)
+summary(GPA_adult)
+```
+
+## What's our reference category?
+
+```{r}
+GPA_adult$coefficients
+```
+
+We need a factor to switch the reference category...
+
+```{r}
+students$adult_fac <- factor(students$adult_group, 
+                             levels = c("young", "mid", "older"))
+```
+
+```{r}
+levels(students$adult_fac)
+```
+
+## Now let's run the model again
+
+```{r}
+GPA_adult2 <- lm(GPA ~ adult_fac, data = students)
+summary(GPA_adult2)
+```
+
+## Plotting with Factors
+
+```{r}
+students |> 
+  filter(GPA <= 4) |> 
+  drop_na() |> 
+  ggplot(aes(x = adult_fac, y = GPA)) + geom_boxplot(fill = "slateblue")
+```
+
+## Activity 
+
+Create a linear model to examine the relationship between X and Y and then plot the results....
