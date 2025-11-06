@@ -10,7 +10,7 @@ execute:
   echo: true
 ---
 
-## Last Week's Dataset
+## Returning to Last Week's Dataset
 
 `Cassady` data from `Multilevel Modeling Using R` by Finch and Bolin. You can access the `Cassady` data from [www.mlminr.com.](https://www.mlminr.com/data-sets)
 
@@ -49,6 +49,20 @@ students |>
 
 ```{r}
 model_gpa_anxiety <- lm(GPA ~ CTA.tot + BStotal, data = students)
+summary(model_gpa_anxiety)
+```
+
+## I want to see the *p*-value!
+
+You can turn off the scientific notation
+
+```{r}
+options(scipen = 999)
+```
+
+Now run the model again
+
+```{r}
 summary(model_gpa_anxiety)
 ```
 
@@ -216,13 +230,15 @@ students |>
 
 ## Activity
 
-You should have already loaded the `tidyverse` package so you should have access to the `gss_cat` data that lives inside the `forcats` package. 
+You will have access to the `gss_cat` data that lives inside the `forcats` package (part of tidyverse).
+
 ```{r}
-glimpse(gss_cat)
+summary(gss_cat)
 ```
+
 ## Activity
 
-I want you to create a linear modeling predicting `tvhours`. Use `age` and an additional factor (your choice) as predictors. Be sure to check the levels of your factor so you can interpret the coefficients. 
+I want you to create a linear model predicting `tvhours`. Use `age` and an additional factor (your choice) as predictors. Be sure to check the levels of your factor so you can interpret the coefficients.
 
 ```{r}
 #| echo: TRUE
