@@ -214,6 +214,27 @@ students |>
   ggplot(aes(x = adult_fac, y = GPA)) + geom_boxplot(fill = "slateblue")
 ```
 
-## Activity 
+## Activity
 
-Create a linear model to examine the relationship between X and Y and then plot the results....
+You should have already loaded the `tidyverse` package so you should have access to the `gss_cat` data that lives inside the `forcats` package. 
+```{r}
+glimpse(gss_cat)
+```
+## Activity
+
+I want you to create a linear modeling predicting `tvhours`. Use `age` and an additional factor (your choice) as predictors. Be sure to check the levels of your factor so you can interpret the coefficients. 
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+# check the levels
+levels(gss_cat$ ? )
+
+# create the model
+tv_model <- lm( ? ~ ? + ? , data = ? )
+summary(tv_model)
+```
+
+## Next Week
+
+> We're going to work through models with binary outcomes -- logistic regression!
