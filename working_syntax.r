@@ -61,3 +61,28 @@ students |>
   filter(GPA <= 4) |> 
   drop_na() |> 
   ggplot(aes(x = adult_group_factor, y = GPA)) + geom_boxplot() # this is the median, but no real difference in GPA 
+
+data()
+
+HairEyeColor
+sleep
+crimtab
+data(package = "forcats")
+
+forcats::gsscat
+gss_cat
+
+library(forcats)
+gss_cat
+View(gss_cat)
+str(gss_cat)
+
+fct_count(gss_cat$marital)
+levels(gss_cat$marital)
+
+View(gss_cat)
+
+model <- lm(tvhours ~ age + race, data = gss_cat)
+summary(model)
+levels(gss_cat$race)
+
