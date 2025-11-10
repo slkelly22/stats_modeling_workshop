@@ -1,0 +1,57 @@
+---
+title: "Stats Modeling in R: Week 3"
+author: "S.Kelly"
+format:
+  revealjs:
+    html-math-method:
+      method: mathjax
+      url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    code-overflow: wrap
+    footer: "S.Kelly | Stats Modeling in R | Fall 2025"
+editor: visual
+execute: 
+  echo: true
+---
+
+## New Dataset
+
+Look at tomorrow: https://carpentries-incubator.github.io/logistic-regression-public-health/01-introBinary/index.html
+
+
+## Why can't we use linear regression?
+
+## What is logistic regression?
+
+```{r}
+1 + 1
+```
+
+## Are probability and odds the same?
+
+<br>
+
+Probability is the $\frac{success}{total}$ so $\frac{1}{3}$ so 33% Probability
+
+<br>
+
+Odds is the $\frac{success}{failure}$ so $\frac{1}{2}$ so .5 odds
+
+![](images/Ornaments.png){fig-align="center"}
+
+## What are we modeling in logistic regression?
+
+The function $f(x) = \frac{1}{1 + e^{-x}}$ is the logistic sigmoid.
+
+$$
+ln\frac{p}{1-p}
+$$
+
+$$
+P(y=1|x) = \frac{1}{1 + e^{-\theta^T x}}
+$$
+
+## What is the Logit?
+
+> Logit(Y) = Ln(odds of success) = log odds
+
+## glm syntax
