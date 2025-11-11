@@ -419,18 +419,36 @@ S.Kelly
 </div>
 </div>
 </section>
-<section id="why-cant-we-use-linear-regression" class="slide level2">
-<h2>Why can’t we use linear regression?</h2>
+<section id="outcome-variable" class="slide level2">
+<h2>Outcome variable</h2>
+<p>Our outcome variable is whether a married woman is participating in the workforce: <code>lfp</code> for labor force participation. It is currently set as a factor.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">fct_count</span>(Mroz<span class="sc">$</span>lfp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  f         n
+  &lt;fct&gt; &lt;int&gt;
+1 no      325
+2 yes     428</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">levels</span>(Mroz<span class="sc">$</span>lfp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "no"  "yes"</code></pre>
+</div>
+</div>
 </section>
 <section id="what-is-logistic-regression" class="slide level2">
 <h2>What is logistic regression?</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 2</code></pre>
-</div>
-</div>
+<p>Logistic regression is an extension of linear regression. The outcome variable you’re modeling is not continuous. It’s binary.</p>
 </section>
+<section id="why-cant-we-use-linear-regression" class="slide level2">
+<h2>Why can’t we use linear regression?</h2>
+<p>The relationship is not linear. The residuals will not be normally distributed. You will not have equal variance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">ggplot</span>(Mroz, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> <span class="fu">as.numeric</span>(lfp))) <span class="sc">+</span> <span class="fu">geom_point</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="stats_modeling_week3_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
 <section id="are-probability-and-odds-the-same" class="slide level2">
 <h2>Are probability and odds the same?</h2>
 <p><br></p>
@@ -457,6 +475,10 @@ P(y=1|x) = \frac{1}{1 + e^{-\theta^T x}}
 </section>
 <section id="glm-syntax" class="slide level2">
 <h2>glm syntax</h2>
+</section>
+<section id="review-also" class="slide level2">
+<h2>Review also</h2>
+<p>https://carpentries-incubator.github.io/logistic-regression-public-health/01-introBinary/index.html</p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>S.Kelly | Stats Modeling in R | Fall 2025</p>

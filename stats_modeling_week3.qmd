@@ -24,13 +24,30 @@ library(tidyverse)
 head(Mroz, 4)
 ```
 
-## Why can't we use linear regression?
+## Outcome variable
+
+Our outcome variable is whether a married woman is participating in the workforce: `lfp` for labor force participation. It is currently set as a factor. 
+
+```{r}
+fct_count(Mroz$lfp)
+levels(Mroz$lfp)
+```
 
 ## What is logistic regression?
 
+Logistic regression is an extension of linear regression. The outcome variable you're modeling is not continuous. It's binary. 
+
+## Why can't we use linear regression?
+
+The relationship is not linear. 
+The residuals will not be normally distributed. 
+You will not have equal variance. 
+
 ```{r}
-1 + 1
+ggplot(Mroz, aes(x = age, y = as.numeric(lfp))) + geom_point() 
 ```
+
+
 
 ## Are probability and odds the same?
 
@@ -61,3 +78,7 @@ $$
 > Logit(Y) = Ln(odds of success) = log odds
 
 ## glm syntax
+
+## Review also
+
+https://carpentries-incubator.github.io/logistic-regression-public-health/01-introBinary/index.html
