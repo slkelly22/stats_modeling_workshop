@@ -15,8 +15,14 @@ execute:
 
 ## New Dataset
 
-Look at tomorrow: https://carpentries-incubator.github.io/logistic-regression-public-health/01-introBinary/index.html
+We're going to use an excerpt from the Panel Study of Income Dynamics (PSID). The dataset `Mroz` is available from the `car` package.
 
+```{r}
+# install.packages("car")
+library(car)
+library(tidyverse)
+head(Mroz, 4)
+```
 
 ## Why can't we use linear regression?
 
