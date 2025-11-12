@@ -77,7 +77,39 @@ $$
 
 > Logit(Y) = Ln(odds of success) = log odds
 
+The binomial model with the logit link is called the logistic regression model because the inverse of the logit link is the logistic function. [John Fox]
+
 ## glm syntax
+
+The `family = binomial` argument indicates a logit link. This is essential. If you don't provide a family argument, then glm resorts to a gaussian family with an identity link, which is equivalent to using the lm() function. 
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+model <- glm(outcome ~ predictor + predictor, family = "binomial", 
+data = )
+```
+
+## Let's run a logistic model
+
+Give details again about what we're modeling (women's employment)
+
+```{r}
+lg_model <- glm(lfp ~ k5 + k618 + age + wc + hc + lwg + inc, 
+family = "binomial", data = Mroz)
+```
+
+## Let's Review the Model Output
+
+```{r}
+summary(lg_model)
+```
+
+## New Function from car package
+
+```{r}
+S(lg_model)
+```
 
 ## Review also
 

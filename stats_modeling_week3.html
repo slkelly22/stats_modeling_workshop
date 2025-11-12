@@ -472,9 +472,100 @@ P(y=1|x) = \frac{1}{1 + e^{-\theta^T x}}
 <blockquote>
 <p>Logit(Y) = Ln(odds of success) = log odds</p>
 </blockquote>
+<p>The binomial model with the logit link is called the logistic regression model because the inverse of the logit link is the logistic function. [John Fox]</p>
 </section>
 <section id="glm-syntax" class="slide level2">
 <h2>glm syntax</h2>
+<p>The <code>family = binomial</code> argument indicates a logit link. This is essential. If you don’t provide a family argument, then glm resorts to a gaussian family with an identity link, which is equivalent to using the lm() function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>model <span class="ot">&lt;-</span> <span class="fu">glm</span>(outcome <span class="sc">~</span> predictor <span class="sc">+</span> predictor, <span class="at">family =</span> <span class="st">"binomial"</span>, </span>
+<span id="cb8-2"><a href=""></a><span class="at">data =</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="lets-run-a-logistic-model" class="slide level2">
+<h2>Let’s run a logistic model</h2>
+<p>Give details again about what we’re modeling (women’s employment)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>lg_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(lfp <span class="sc">~</span> k5 <span class="sc">+</span> k618 <span class="sc">+</span> age <span class="sc">+</span> wc <span class="sc">+</span> hc <span class="sc">+</span> lwg <span class="sc">+</span> inc, </span>
+<span id="cb9-2"><a href=""></a><span class="at">family =</span> <span class="st">"binomial"</span>, <span class="at">data =</span> Mroz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="lets-review-the-model-output" class="slide level2">
+<h2>Let’s Review the Model Output</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">summary</span>(lg_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = lfp ~ k5 + k618 + age + wc + hc + lwg + inc, family = "binomial", 
+    data = Mroz)
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  3.182140   0.644375   4.938 7.88e-07 ***
+k5          -1.462913   0.197001  -7.426 1.12e-13 ***
+k618        -0.064571   0.068001  -0.950 0.342337    
+age         -0.062871   0.012783  -4.918 8.73e-07 ***
+wcyes        0.807274   0.229980   3.510 0.000448 ***
+hcyes        0.111734   0.206040   0.542 0.587618    
+lwg          0.604693   0.150818   4.009 6.09e-05 ***
+inc         -0.034446   0.008208  -4.196 2.71e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1029.75  on 752  degrees of freedom
+Residual deviance:  905.27  on 745  degrees of freedom
+AIC: 921.27
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+</section>
+<section id="new-function-from-car-package" class="slide level2">
+<h2>New Function from car package</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">S</span>(lg_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: glm(formula = lfp ~ k5 + k618 + age + wc + hc + lwg + inc, family =
+          "binomial", data = Mroz)
+
+Coefficients:
+             Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  3.182140   0.644375   4.938 7.88e-07 ***
+k5          -1.462913   0.197001  -7.426 1.12e-13 ***
+k618        -0.064571   0.068001  -0.950 0.342337    
+age         -0.062871   0.012783  -4.918 8.73e-07 ***
+wcyes        0.807274   0.229980   3.510 0.000448 ***
+hcyes        0.111734   0.206040   0.542 0.587618    
+lwg          0.604693   0.150818   4.009 6.09e-05 ***
+inc         -0.034446   0.008208  -4.196 2.71e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1029.75  on 752  degrees of freedom
+Residual deviance:  905.27  on 745  degrees of freedom
+
+ logLik      df     AIC     BIC 
+-452.63       8  921.27  958.26 
+
+Number of Fisher Scoring iterations: 4
+
+Exponentiated Coefficients and Confidence Bounds
+              Estimate     2.5 %     97.5 %
+(Intercept) 24.0982799 6.9377228 87.0347916
+k5           0.2315607 0.1555331  0.3370675
+k618         0.9374698 0.8200446  1.0710837
+age          0.9390650 0.9154832  0.9625829
+wcyes        2.2417880 1.4347543  3.5387571
+hcyes        1.1182149 0.7467654  1.6766380
+lwg          1.8306903 1.3689201  2.4768235
+inc          0.9661401 0.9502809  0.9814042</code></pre>
+</div>
+</div>
 </section>
 <section id="review-also" class="slide level2">
 <h2>Review also</h2>
