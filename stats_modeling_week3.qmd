@@ -26,7 +26,7 @@ head(Mroz, 4)
 
 ## Outcome variable
 
-Our outcome variable is whether a married woman is participating in the workforce: `lfp` for labor force participation. It is currently set as a factor. 
+Our outcome variable is whether a married woman is participating in the workforce: `lfp` for labor force participation. It is currently set as a factor.
 
 ```{r}
 fct_count(Mroz$lfp)
@@ -35,21 +35,17 @@ levels(Mroz$lfp)
 
 ## What is logistic regression?
 
-Logistic regression is an extension of linear regression. The outcome variable you're modeling is not continuous. It's binary. 
+Logistic regression is an extension of linear regression. The outcome variable you're modeling is binary, not continuous, and requires a link function to make the equation linear in the parameters. Logistic regression is a type of generalized linear model (GLM).
 
 ## Why can't we use linear regression?
 
-The relationship is not linear. 
-The residuals will not be normally distributed. 
-You will not have equal variance. 
+The relationship is not linear. The residuals will not be normally distributed. You will not have equal variance.
 
 ```{r}
 ggplot(Mroz, aes(x = age, y = as.numeric(lfp))) + geom_point() 
 ```
 
-
-
-## Are probability and odds the same?
+## Probability? Odds?
 
 <br>
 
@@ -63,25 +59,17 @@ Odds is the $\frac{success}{failure}$ so $\frac{1}{2}$ so .5 odds
 
 ## What are we modeling in logistic regression?
 
-The function $f(x) = \frac{1}{1 + e^{-x}}$ is the logistic sigmoid.
+> Logit(Y) = Ln(odds of success) = log odds
 
 $$
 ln\frac{p}{1-p}
 $$
 
-$$
-P(y=1|x) = \frac{1}{1 + e^{-\theta^T x}}
-$$
-
-## What is the Logit?
-
-> Logit(Y) = Ln(odds of success) = log odds
-
-The binomial model with the logit link is called the logistic regression model because the inverse of the logit link is the logistic function. [John Fox]
+The binomial model with the logit link is called the logistic regression model because the inverse of the logit link is the logistic function. \[John Fox\]
 
 ## glm syntax
 
-The `family = binomial` argument indicates a logit link. This is essential. If you don't provide a family argument, then glm resorts to a gaussian family with an identity link, which is equivalent to using the lm() function. 
+The `family = binomial` argument indicates a logit link. This is essential. If you don't provide a family argument, then glm resorts to a gaussian family with an identity link, which is equivalent to using the lm() function.
 
 ```{r}
 #| echo: TRUE
@@ -101,16 +89,97 @@ family = "binomial", data = Mroz)
 
 ## Let's Review the Model Output
 
+The default coefficients in logistic regression are `log odds`.
+
 ```{r}
 summary(lg_model)
 ```
 
-## New Function from car package
+## Log Odds and Odds Ratios
+
+Log odds can be difficult for people to understand, so most people turn log odds into odds ratios (ORs) or probabilities. We will do both.
+
+How do you create an odds ratio? You exponentiate the log odd beta coefficients: $e^{-1.46}$
+
+```{r}
+coefficients(lg_model)
+exp(-1.46)
+```
+
+## Getting the log odds and ORs together
+
+There is an `S` function from the `car` package that will provide both the log odds coefficents and the odds ratios.
 
 ```{r}
 S(lg_model)
 ```
 
-## Review also
+## Person-Level Probabilities
 
-https://carpentries-incubator.github.io/logistic-regression-public-health/01-introBinary/index.html
+You can get predicted probabilities at the row (in this case, person) level.
+
+```{r}
+lg_model$fitted.values
+```
+
+## If you want that a little nicer...
+
+```{r}
+#install.packages("modelbased")
+library(modelbased)
+estimate_prediction(lg_model, predict = "response")
+```
+
+## What if we want the predicted probabilites for a certain group?
+
+```{r}
+wc_prob <- estimate_means(lg_model, by = "wc", type = "response")
+wc_prob
+```
+
+## Plotting Group Level Estimates
+
+```{r}
+plot(wc_prob) + labs(x = "Wife's College Attendance", 
+                     y = "Probability of Labor Force Participation")
+```
+
+## Plotting Across Continuous Predictors
+
+Does the probability of working vary if a woman has older children (aged 6-18) in the household? 
+
+```{r}
+prob_olderkids <- estimate_means(lg_model, by = "k618", type = "response")
+plot(prob_olderkids)
+```
+
+## Plotting Across Continuous Predictors
+
+What if the children are younger (< age 5)
+
+```{r}
+prob_youngkids <- estimate_means(lg_model, by = "k5", type = "response")
+plot(prob_youngkids)
+```
+
+## What's our takeaway?
+
+Logistic regression is a powerful modeling tool for binary outcomes.
+
+-   use the glm() function rather than lm() function
+
+-   be aware of the difference between log odds, odds ratios, and probabilities
+
+-   both the car and modelbased packages are very useful in modeling glms
+
+## Next Week
+
+What do y'all want to learn?
+
+-   Non-parametric tests? Mann-Whitney U, Kruskal-Wallis?
+
+-   Chi-Square?
+
+-   ANOVA and repeated-measures ANOVA?
+
+-   Correlation Matrices?
