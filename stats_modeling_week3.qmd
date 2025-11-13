@@ -84,7 +84,7 @@ data = )
 
 ## Let's run a logistic model
 
-What is the relationship between our predictors and women's participation in the labor force? 
+What is the relationship between our predictors and women's participation in the labor force?
 
 ```{r}
 lg_model <- glm(lfp ~ k5 + k618 + age + wc + hc + lwg + inc, 
@@ -188,12 +188,11 @@ activity_prob
 
 ## Activity
 
-Can you visualize it? 
+Can you visualize it?
 
 ```{r}
 plot(activity_prob)
 ```
-
 
 ## What's our takeaway?
 
