@@ -469,7 +469,7 @@ S.Kelly
 <p><span class="math display">\[
 ln\frac{p}{1-p}
 \]</span></p>
-<p>The binomial model with the logit link is called the logistic regression model because the inverse of the logit link is the logistic function. [John Fox]</p>
+<p>The binomial model with the logit link is called the logistic regression model because the inverse of the logit link is the logistic function [John Fox]</p>
 </section>
 <section id="glm-syntax" class="slide level2">
 <h2>glm syntax</h2>
@@ -1601,6 +1601,7 @@ Predictions are on the response-scale.</code></pre>
 </section>
 <section id="plotting-group-level-estimates" class="slide level2">
 <h2>Plotting Group Level Estimates</h2>
+<p>Does a woman’s college attendance relate to the probability of her working?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">plot</span>(wc_prob) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Wife's College Attendance"</span>, </span>
 <span id="cb24-2"><a href=""></a>                     <span class="at">y =</span> <span class="st">"Probability of Labor Force Participation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1625,6 +1626,42 @@ Predictions are on the response-scale.</code></pre>
 
 </div>
 <img data-src="stats_modeling_week3_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<section id="activity" class="slide level2">
+<h2>Activity</h2>
+<p>Does a woman’s husband’s college attendance relate to the probability of her working?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>activity_prob <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(lg_model, <span class="at">by =</span> <span class="st">"?"</span>, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb27-2"><a href=""></a>activity_prob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="activity-answer" class="slide level2">
+<h2>Activity Answer</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a>activity_prob <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(lg_model, <span class="at">by =</span> <span class="st">"hc"</span>, <span class="at">type =</span> <span class="st">"response"</span>)</span>
+<span id="cb28-2"><a href=""></a>activity_prob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated Marginal Means
+
+hc  | Probability |   SE |       95% CI |     z
+-----------------------------------------------
+no  |        0.61 | 0.03 | [0.54, 0.67] | 19.46
+yes |        0.63 | 0.03 | [0.57, 0.69] | 20.10
+
+Variable predicted: lfp
+Predictors modulated: hc
+Predictors averaged: k5 (0.24), k618 (1.4), age (43), wc, lwg (1.1), inc (20)
+Predictions are on the response-scale.</code></pre>
+</div>
+</div>
+</section>
+<section id="activity-1" class="slide level2">
+<h2>Activity</h2>
+<p>Can you visualize it?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="fu">plot</span>(activity_prob)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="stats_modeling_week3_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
 <section id="whats-our-takeaway" class="slide level2">
 <h2>What’s our takeaway?</h2>
 <p>Logistic regression is a powerful modeling tool for binary outcomes.</p>

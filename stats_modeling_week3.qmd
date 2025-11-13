@@ -69,7 +69,7 @@ $$
 ln\frac{p}{1-p}
 $$
 
-The binomial model with the logit link is called the logistic regression model because the inverse of the logit link is the logistic function. \[John Fox\]
+The binomial model with the logit link is called the logistic regression model because the inverse of the logit link is the logistic function \[John Fox\]
 
 ## glm syntax
 
@@ -143,6 +143,8 @@ wc_prob
 
 ## Plotting Group Level Estimates
 
+Does a woman's college attendance relate to the probability of her working?
+
 ```{r}
 plot(wc_prob) + labs(x = "Wife's College Attendance", 
                      y = "Probability of Labor Force Participation")
@@ -165,6 +167,33 @@ What if the children are younger (\< age 5)
 prob_youngkids <- estimate_means(lg_model, by = "k5", type = "response")
 plot(prob_youngkids)
 ```
+
+## Activity
+
+Does a woman's husband's college attendance relate to the probability of her working?
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+activity_prob <- estimate_means(lg_model, by = "?", type = "response")
+activity_prob
+```
+
+## Activity Answer
+
+```{r}
+activity_prob <- estimate_means(lg_model, by = "hc", type = "response")
+activity_prob
+```
+
+## Activity
+
+Can you visualize it? 
+
+```{r}
+plot(activity_prob)
+```
+
 
 ## What's our takeaway?
 
