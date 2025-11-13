@@ -24,6 +24,14 @@ library(tidyverse)
 head(Mroz, 4)
 ```
 
+## What do our variables represent?
+
+![](images/Mroz_variables.png){fig-align="center"}
+
+## What is logistic regression?
+
+Logistic regression is an extension of linear regression. The outcome variable you're modeling is binary, not continuous, and requires a link function to make the equation linear in the parameters. Logistic regression is a type of generalized linear model (GLM).
+
 ## Outcome variable
 
 Our outcome variable is whether a married woman is participating in the workforce: `lfp` for labor force participation. It is currently set as a factor.
@@ -32,10 +40,6 @@ Our outcome variable is whether a married woman is participating in the workforc
 fct_count(Mroz$lfp)
 levels(Mroz$lfp)
 ```
-
-## What is logistic regression?
-
-Logistic regression is an extension of linear regression. The outcome variable you're modeling is binary, not continuous, and requires a link function to make the equation linear in the parameters. Logistic regression is a type of generalized linear model (GLM).
 
 ## Why can't we use linear regression?
 
@@ -80,7 +84,7 @@ data = )
 
 ## Let's run a logistic model
 
-Give details again about what we're modeling (women's employment)
+What is the relationship between our predictors and women's participation in the labor force? 
 
 ```{r}
 lg_model <- glm(lfp ~ k5 + k618 + age + wc + hc + lwg + inc, 
@@ -146,7 +150,7 @@ plot(wc_prob) + labs(x = "Wife's College Attendance",
 
 ## Plotting Across Continuous Predictors
 
-Does the probability of working vary if a woman has older children (aged 6-18) in the household? 
+Does the probability of working vary if a woman has older children (aged 6-18) in the household?
 
 ```{r}
 prob_olderkids <- estimate_means(lg_model, by = "k618", type = "response")
@@ -155,7 +159,7 @@ plot(prob_olderkids)
 
 ## Plotting Across Continuous Predictors
 
-What if the children are younger (< age 5)
+What if the children are younger (\< age 5)
 
 ```{r}
 prob_youngkids <- estimate_means(lg_model, by = "k5", type = "response")

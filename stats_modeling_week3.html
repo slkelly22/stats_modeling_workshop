@@ -419,6 +419,14 @@ S.Kelly
 </div>
 </div>
 </section>
+<section id="what-do-our-variables-represent" class="slide level2">
+<h2>What do our variables represent?</h2>
+
+<img data-src="images/Mroz_variables.png" class="quarto-figure quarto-figure-center r-stretch"></section>
+<section id="what-is-logistic-regression" class="slide level2">
+<h2>What is logistic regression?</h2>
+<p>Logistic regression is an extension of linear regression. The outcome variable you’re modeling is binary, not continuous, and requires a link function to make the equation linear in the parameters. Logistic regression is a type of generalized linear model (GLM).</p>
+</section>
 <section id="outcome-variable" class="slide level2">
 <h2>Outcome variable</h2>
 <p>Our outcome variable is whether a married woman is participating in the workforce: <code>lfp</code> for labor force participation. It is currently set as a factor.</p>
@@ -436,10 +444,6 @@ S.Kelly
 <pre><code>[1] "no"  "yes"</code></pre>
 </div>
 </div>
-</section>
-<section id="what-is-logistic-regression" class="slide level2">
-<h2>What is logistic regression?</h2>
-<p>Logistic regression is an extension of linear regression. The outcome variable you’re modeling is binary, not continuous, and requires a link function to make the equation linear in the parameters. Logistic regression is a type of generalized linear model (GLM).</p>
 </section>
 <section id="why-cant-we-use-linear-regression" class="slide level2">
 <h2>Why can’t we use linear regression?</h2>
@@ -477,7 +481,7 @@ ln\frac{p}{1-p}
 </section>
 <section id="lets-run-a-logistic-model" class="slide level2">
 <h2>Let’s run a logistic model</h2>
-<p>Give details again about what we’re modeling (women’s employment)</p>
+<p>What is the relationship between our predictors and women’s participation in the labor force?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>lg_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(lfp <span class="sc">~</span> k5 <span class="sc">+</span> k618 <span class="sc">+</span> age <span class="sc">+</span> wc <span class="sc">+</span> hc <span class="sc">+</span> lwg <span class="sc">+</span> inc, </span>
 <span id="cb9-2"><a href=""></a><span class="at">family =</span> <span class="st">"binomial"</span>, <span class="at">data =</span> Mroz)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
