@@ -1,0 +1,27 @@
+---
+title: "Stats Modeling in R: Week 4"
+author: "S.Kelly"
+format:
+  revealjs:
+    html-math-method:
+      method: mathjax
+      url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    code-overflow: wrap
+    footer: "S.Kelly | Stats Modeling in R | Fall 2025"
+editor: visual
+execute: 
+  echo: true
+---
+
+## New Package
+
+We're going to explore a relatively new R packaged called `interactions`. You can find details at interactions.jacob-long.com. The creator of this package is a faculty member at University of South Carolina. 
+
+```{r}
+# install.packages("interactions")
+library(interactions)
+```
+
+## 
+
+## 
