@@ -15,7 +15,7 @@ execute:
 
 ## Visualizing Correlation
 
-We're going to install and load the `corrplot` and `usdata` packages. Also load the `tidyverse`. 
+We're going to install and load the `corrplot` and `usdata` packages. Also load the `tidyverse`.
 
 ```{r}
 # install.packages("corrplot", "usdata")
@@ -26,7 +26,7 @@ library(tidyverse)
 
 ## County Dataset
 
-There is a `county` dataset inside the usdata package that we want to use. Let's take a look at the variables. 
+There is a `county` dataset inside the usdata package that we want to use. Let's take a look at the variables.
 
 ```{r}
 summary(county)
@@ -34,7 +34,7 @@ summary(county)
 
 ## Visualizing Correlation
 
-We only want the numeric variables for our correlation plot so let's create a new object. 
+We only want the numeric variables for our correlation plot so let's create a new object.
 
 ```{r}
 county_numeric <- county |> 
@@ -42,6 +42,7 @@ county_numeric <- county |>
 
 head(county_numeric)
 ```
+
 ## Visualizing Correlation
 
 ```{r}
@@ -69,6 +70,49 @@ We're going to explore a relatively new R packaged called `interactions`. You ca
 library(interactions)
 ```
 
-## 
 
-## 
+## Regression with an Interaction
+
+Outcome: Unemployment Rate \
+Predictors: Homeownership, Median Education, and the interaction between the two predictors
+
+```{r}
+modelA <- lm(unemployment_rate ~ homeownership + median_edu + 
+               homeownership:median_edu, data = county)
+
+levels(county$median_edu) # keep this is mind
+```
+
+## Regression with an Interaction
+
+```{r}
+summary(modelA) 
+```
+
+## Visualizing the Interaction
+
+Why does this look insane? 
+```{r}
+interact_plot(modelA, pred = homeownership, modx = median_edu, 
+              jnplot = TRUE)
+```
+
+## This is why...
+
+```{r}
+fct_count(county$median_edu)
+```
+
+## County Dataset
+
+We're going to continue working with the county dataset but first we need to drop two rows prior to modeling our factors.
+
+```{r}
+# There are only two counties (out of 3K) 
+# with a median education less than high school. 
+
+nohs_county <- county |> 
+  filter(median_edu != "below_hs")
+
+levels(nohs_county$median_edu)
+```

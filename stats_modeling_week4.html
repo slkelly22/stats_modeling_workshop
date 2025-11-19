@@ -293,19 +293,102 @@ S.Kelly
 <span id="cb7-2"><a href=""></a>         <span class="at">type =</span> <span class="st">"upper"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="new-package" class="slide level2">
-<h2>New Package</h2>
+<section id="next-interactions" class="slide level2">
+<h2>Next: Interactions</h2>
 <p>We’re going to explore a relatively new R packaged called <code>interactions</code>. You can find details at interactions.jacob-long.com. The creator of this package is a faculty member at University of South Carolina.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="co"># install.packages("interactions")</span></span>
 <span id="cb8-2"><a href=""></a><span class="fu">library</span>(interactions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
+<section id="regression-with-an-interaction" class="slide level2">
+<h2>Regression with an Interaction</h2>
+<p>Outcome: Unemployment Rate<br>
+Predictors: Homeownership, Median Education, and the interaction between the two predictors</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>modelA <span class="ot">&lt;-</span> <span class="fu">lm</span>(unemployment_rate <span class="sc">~</span> homeownership <span class="sc">+</span> median_edu <span class="sc">+</span> </span>
+<span id="cb9-2"><a href=""></a>               homeownership<span class="sc">:</span>median_edu, <span class="at">data =</span> county)</span>
+<span id="cb9-3"><a href=""></a></span>
+<span id="cb9-4"><a href=""></a><span class="fu">levels</span>(county<span class="sc">$</span>median_edu) <span class="co"># keep this is mind</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "below_hs"     "hs_diploma"   "some_college" "bachelors"   </code></pre>
+</div>
+</div>
 </section>
-<section id="section-1" class="slide level2">
-<h2></h2>
+<section id="regression-with-an-interaction-1" class="slide level2">
+<h2>Regression with an Interaction</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">summary</span>(modelA) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = unemployment_rate ~ homeownership + median_edu + 
+    homeownership:median_edu, data = county)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.6118 -0.9726 -0.2194  0.6889 13.0705 
+
+Coefficients:
+                                     Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                          -4.47850    3.26388  -1.372 0.170118    
+homeownership                         0.20338    0.05244   3.879 0.000107 ***
+median_eduhs_diploma                 13.00813    3.29701   3.945 8.14e-05 ***
+median_edusome_college               10.11798    3.28116   3.084 0.002063 ** 
+median_edubachelors                   8.56592    3.44704   2.485 0.013007 *  
+homeownership:median_eduhs_diploma   -0.24808    0.05281  -4.698 2.74e-06 ***
+homeownership:median_edusome_college -0.22383    0.05264  -4.252 2.18e-05 ***
+homeownership:median_edubachelors    -0.21584    0.05501  -3.924 8.91e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.535 on 3131 degrees of freedom
+  (3 observations deleted due to missingness)
+Multiple R-squared:  0.1351,    Adjusted R-squared:  0.1331 
+F-statistic: 69.86 on 7 and 3131 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="visualizing-the-interaction" class="slide level2">
+<h2>Visualizing the Interaction</h2>
+<p>Why does this look insane?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">interact_plot</span>(modelA, <span class="at">pred =</span> homeownership, <span class="at">modx =</span> median_edu, </span>
+<span id="cb13-2"><a href=""></a>              <span class="at">jnplot =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+<section id="this-is-why" class="slide level2">
+<h2>This is why…</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">fct_count</span>(county<span class="sc">$</span>median_edu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  f                n
+  &lt;fct&gt;        &lt;int&gt;
+1 below_hs         2
+2 hs_diploma    1397
+3 some_college  1695
+4 bachelors       46
+5 &lt;NA&gt;             2</code></pre>
+</div>
+</div>
+</section>
+<section id="county-dataset-1" class="slide level2">
+<h2>County Dataset</h2>
+<p>We’re going to continue working with the county dataset but first we need to drop two rows prior to modeling our factors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># There are only two counties (out of 3K) </span></span>
+<span id="cb16-2"><a href=""></a><span class="co"># with a median education less than high school. </span></span>
+<span id="cb16-3"><a href=""></a></span>
+<span id="cb16-4"><a href=""></a>nohs_county <span class="ot">&lt;-</span> county <span class="sc">|&gt;</span> </span>
+<span id="cb16-5"><a href=""></a>  <span class="fu">filter</span>(median_edu <span class="sc">!=</span> <span class="st">"below_hs"</span>)</span>
+<span id="cb16-6"><a href=""></a></span>
+<span id="cb16-7"><a href=""></a><span class="fu">levels</span>(nohs_county<span class="sc">$</span>median_edu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "below_hs"     "hs_diploma"   "some_college" "bachelors"   </code></pre>
+</div>
+</div>
 
 </section>
     </div>
