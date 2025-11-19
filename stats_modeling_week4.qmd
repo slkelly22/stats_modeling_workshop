@@ -13,9 +13,56 @@ execute:
   echo: true
 ---
 
-## New Package
+## Visualizing Correlation
 
-We're going to explore a relatively new R packaged called `interactions`. You can find details at interactions.jacob-long.com. The creator of this package is a faculty member at University of South Carolina. 
+We're going to install and load the `corrplot` and `usdata` packages. Also load the `tidyverse`. 
+
+```{r}
+# install.packages("corrplot", "usdata")
+library(corrplot)
+library(usdata)
+library(tidyverse)
+```
+
+## County Dataset
+
+There is a `county` dataset inside the usdata package that we want to use. Let's take a look at the variables. 
+
+```{r}
+summary(county)
+```
+
+## Visualizing Correlation
+
+We only want the numeric variables for our correlation plot so let's create a new object. 
+
+```{r}
+county_numeric <- county |> 
+  select_if(is.numeric)
+
+head(county_numeric)
+```
+## Visualizing Correlation
+
+```{r}
+corrplot(cor(county_numeric, use = "complete.obs"), method = "pie", 
+         type = "upper")
+```
+
+## Exercise: Make a Corr Plot
+
+Look at the help menu for the `corrplot` function and change the method argument to something other than "pie".
+
+```{r}
+#| echo: TRUE
+#| eval: FALSE
+corrplot(cor(county_numeric, use = "complete.obs"), method = "?", 
+         type = "upper")
+```
+
+## Next: Interactions
+
+We're going to explore a relatively new R packaged called `interactions`. You can find details at interactions.jacob-long.com. The creator of this package is a faculty member at University of South Carolina.
 
 ```{r}
 # install.packages("interactions")
