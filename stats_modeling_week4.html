@@ -474,23 +474,50 @@ F-statistic:  92.3 on 5 and 3133 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
+<section id="simple-slopes" class="slide level2">
+<h2>Simple Slopes</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">sim_slopes</span>(modelB, <span class="at">pred =</span> homeownership, <span class="at">modx =</span> median_edu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SIMPLE SLOPES ANALYSIS
+
+Slope of homeownership when median_edu = high_school: 
+
+   Est.   S.E.   t val.      p
+------- ------ -------- ------
+  -0.04   0.01    -6.78   0.00
+
+Slope of homeownership when median_edu = some_college: 
+
+   Est.   S.E.   t val.      p
+------- ------ -------- ------
+  -0.02   0.00    -4.43   0.00
+
+Slope of homeownership when median_edu = bachelors: 
+
+   Est.   S.E.   t val.      p
+------- ------ -------- ------
+  -0.01   0.02    -0.75   0.46</code></pre>
+</div>
+</div>
+</section>
 <section id="visualizing-the-interaction-1" class="slide level2">
 <h2>Visualizing the Interaction</h2>
 <p>Any better?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">interact_plot</span>(modelB, <span class="at">pred =</span> homeownership, <span class="at">modx =</span> median_edu, </span>
-<span id="cb24-2"><a href=""></a>              <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="fu">interact_plot</span>(modelB, <span class="at">pred =</span> homeownership, <span class="at">modx =</span> median_edu, </span>
+<span id="cb26-2"><a href=""></a>              <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
 <section id="categorical-factor-predictors" class="slide level2">
 <h2>Categorical (Factor) Predictors</h2>
 <p>What if we had an interaction between two categorical predictors?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>modelC <span class="ot">&lt;-</span> <span class="fu">lm</span>(unemployment_rate <span class="sc">~</span> metro <span class="sc">+</span> median_edu <span class="sc">+</span> </span>
-<span id="cb25-2"><a href=""></a>               metro<span class="sc">:</span>median_edu, <span class="at">data =</span> county)</span>
-<span id="cb25-3"><a href=""></a></span>
-<span id="cb25-4"><a href=""></a><span class="fu">levels</span>(county<span class="sc">$</span>metro)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>modelC <span class="ot">&lt;-</span> <span class="fu">lm</span>(unemployment_rate <span class="sc">~</span> metro <span class="sc">+</span> median_edu <span class="sc">+</span> </span>
+<span id="cb27-2"><a href=""></a>               metro<span class="sc">:</span>median_edu, <span class="at">data =</span> county)</span>
+<span id="cb27-3"><a href=""></a></span>
+<span id="cb27-4"><a href=""></a><span class="fu">levels</span>(county<span class="sc">$</span>metro)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "no"  "yes"</code></pre>
 </div>
@@ -499,7 +526,7 @@ F-statistic:  92.3 on 5 and 3133 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="model-summary" class="slide level2">
 <h2>Model Summary</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">summary</span>(modelC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">summary</span>(modelC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -535,10 +562,10 @@ F-statistic: 78.09 on 5 and 3133 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="visualizing-the-non-interaction" class="slide level2">
 <h2>Visualizing the (non) Interaction</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">cat_plot</span>(modelC, <span class="at">pred =</span> median_edu, <span class="at">modx =</span> metro)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">cat_plot</span>(modelC, <span class="at">pred =</span> median_edu, <span class="at">modx =</span> metro)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
+<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
 <section id="more-statistics" class="slide level2">
 <h2>More Statistics?!</h2>
 

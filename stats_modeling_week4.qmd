@@ -146,6 +146,12 @@ levels(county$median_edu) # keep this is mind
 summary(modelB) 
 ```
 
+## Simple Slopes
+
+```{r}
+sim_slopes(modelB, pred = homeownership, modx = median_edu)
+```
+
 ## Visualizing the Interaction
 
 Any better?
