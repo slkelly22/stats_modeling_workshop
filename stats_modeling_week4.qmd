@@ -15,7 +15,7 @@ execute:
 
 ## Visualizing Correlation
 
-We're going to install and load the `corrplot` and `usdata` packages. Also load the `tidyverse`.
+We're going to install and load the `corrplot` and `usdata` packages. Let's also load the `tidyverse`.
 
 ```{r}
 # install.packages("corrplot", "usdata")
@@ -94,13 +94,18 @@ levels(county$median_edu) # keep this is mind
 summary(modelA) 
 ```
 
+## Output from Interaction Package
+
+```{r}
+sim_slopes(modelA, pred = homeownership, modx = median_edu)
+```
+
 ## Visualizing the Interaction
 
 Why does this look insane?
 
 ```{r}
-interact_plot(modelA, pred = homeownership, modx = median_edu, 
-              jnplot = TRUE)
+interact_plot(modelA, pred = homeownership, modx = median_edu, interval = TRUE)
 ```
 
 ## This is why...
@@ -147,7 +152,7 @@ Any better?
 
 ```{r}
 interact_plot(modelB, pred = homeownership, modx = median_edu, 
-              jnplot = TRUE)
+              interval = TRUE)
 ```
 
 ## Categorical (Factor) Predictors
@@ -174,8 +179,7 @@ Change the function to `cat_plot` when both the predictor and moderator are cate
 ## Visualizing the (non) Interaction
 
 ```{r}
-cat_plot(modelC, pred = median_edu, modx = metro, 
-              jnplot = TRUE)
+cat_plot(modelC, pred = median_edu, modx = metro)
 ```
 
 ## More Statistics?!
@@ -188,7 +192,7 @@ I also teach credit-bearing statistics courses for departments
 
 ## Final Workshop Series Feedback
 
-Insert QR Code
+![](images/Stats_R_Series_Feedback.png){fig-align="center"}
 
 You can always email me at `slkelly@olemiss.edu` or `slkelly@go.olemiss.edu`
 

@@ -205,7 +205,7 @@ S.Kelly
 </section>
 <section id="visualizing-correlation" class="slide level2">
 <h2>Visualizing Correlation</h2>
-<p>We’re going to install and load the <code>corrplot</code> and <code>usdata</code> packages. Also load the <code>tidyverse</code>.</p>
+<p>We’re going to install and load the <code>corrplot</code> and <code>usdata</code> packages. Let’s also load the <code>tidyverse</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="co"># install.packages("corrplot", "usdata")</span></span>
 <span id="cb1-2"><a href=""></a><span class="fu">library</span>(corrplot)</span>
@@ -355,19 +355,51 @@ F-statistic: 69.86 on 7 and 3131 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
+<section id="output-from-interaction-package" class="slide level2">
+<h2>Output from Interaction Package</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">sim_slopes</span>(modelA, <span class="at">pred =</span> homeownership, <span class="at">modx =</span> median_edu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SIMPLE SLOPES ANALYSIS
+
+Slope of homeownership when median_edu = below_hs: 
+
+  Est.   S.E.   t val.      p
+------ ------ -------- ------
+  0.20   0.05     3.88   0.00
+
+Slope of homeownership when median_edu = hs_diploma: 
+
+   Est.   S.E.   t val.      p
+------- ------ -------- ------
+  -0.04   0.01    -7.16   0.00
+
+Slope of homeownership when median_edu = some_college: 
+
+   Est.   S.E.   t val.      p
+------- ------ -------- ------
+  -0.02   0.00    -4.45   0.00
+
+Slope of homeownership when median_edu = bachelors: 
+
+   Est.   S.E.   t val.      p
+------- ------ -------- ------
+  -0.01   0.02    -0.75   0.45</code></pre>
+</div>
+</div>
+</section>
 <section id="visualizing-the-interaction" class="slide level2">
 <h2>Visualizing the Interaction</h2>
 <p>Why does this look insane?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">interact_plot</span>(modelA, <span class="at">pred =</span> homeownership, <span class="at">modx =</span> median_edu, </span>
-<span id="cb13-2"><a href=""></a>              <span class="at">jnplot =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">interact_plot</span>(modelA, <span class="at">pred =</span> homeownership, <span class="at">modx =</span> median_edu, <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
 <section id="this-is-why" class="slide level2">
 <h2>This is why…</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">fct_count</span>(county<span class="sc">$</span>median_edu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">fct_count</span>(county<span class="sc">$</span>median_edu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 2
   f                n
@@ -384,14 +416,14 @@ F-statistic: 69.86 on 7 and 3131 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2>Yikes. Deal with that Factor</h2>
 <p>We’re going to continue working with the county dataset but first we need contend with that factor level issue.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># There are only two counties (out of 3K) </span></span>
-<span id="cb16-2"><a href=""></a><span class="co"># with a median education less than high school. </span></span>
-<span id="cb16-3"><a href=""></a><span class="co"># We're going to merge the "below_hs" level with "hs_diploma"</span></span>
-<span id="cb16-4"><a href=""></a></span>
-<span id="cb16-5"><a href=""></a>county<span class="sc">$</span>median_edu <span class="ot">&lt;-</span> <span class="fu">fct_collapse</span>(county<span class="sc">$</span>median_edu, </span>
-<span id="cb16-6"><a href=""></a>                                  <span class="at">high_school =</span> <span class="fu">c</span>(<span class="st">"hs_diploma"</span>, <span class="st">"below_hs"</span>))</span>
-<span id="cb16-7"><a href=""></a></span>
-<span id="cb16-8"><a href=""></a><span class="fu">levels</span>(county<span class="sc">$</span>median_edu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="co"># There are only two counties (out of 3K) </span></span>
+<span id="cb18-2"><a href=""></a><span class="co"># with a median education less than high school. </span></span>
+<span id="cb18-3"><a href=""></a><span class="co"># We're going to merge the "below_hs" level with "hs_diploma"</span></span>
+<span id="cb18-4"><a href=""></a></span>
+<span id="cb18-5"><a href=""></a>county<span class="sc">$</span>median_edu <span class="ot">&lt;-</span> <span class="fu">fct_collapse</span>(county<span class="sc">$</span>median_edu, </span>
+<span id="cb18-6"><a href=""></a>                                  <span class="at">high_school =</span> <span class="fu">c</span>(<span class="st">"hs_diploma"</span>, <span class="st">"below_hs"</span>))</span>
+<span id="cb18-7"><a href=""></a></span>
+<span id="cb18-8"><a href=""></a><span class="fu">levels</span>(county<span class="sc">$</span>median_edu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "high_school"  "some_college" "bachelors"   </code></pre>
 </div>
@@ -401,10 +433,10 @@ F-statistic: 69.86 on 7 and 3131 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2>Regression Model Round 2</h2>
 <p>Now we’re going to run the regression with the updated factor.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>modelB <span class="ot">&lt;-</span> <span class="fu">lm</span>(unemployment_rate <span class="sc">~</span> homeownership <span class="sc">+</span> median_edu <span class="sc">+</span> </span>
-<span id="cb18-2"><a href=""></a>               homeownership<span class="sc">:</span>median_edu, <span class="at">data =</span> county)</span>
-<span id="cb18-3"><a href=""></a></span>
-<span id="cb18-4"><a href=""></a><span class="fu">levels</span>(county<span class="sc">$</span>median_edu) <span class="co"># keep this is mind</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>modelB <span class="ot">&lt;-</span> <span class="fu">lm</span>(unemployment_rate <span class="sc">~</span> homeownership <span class="sc">+</span> median_edu <span class="sc">+</span> </span>
+<span id="cb20-2"><a href=""></a>               homeownership<span class="sc">:</span>median_edu, <span class="at">data =</span> county)</span>
+<span id="cb20-3"><a href=""></a></span>
+<span id="cb20-4"><a href=""></a><span class="fu">levels</span>(county<span class="sc">$</span>median_edu) <span class="co"># keep this is mind</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "high_school"  "some_college" "bachelors"   </code></pre>
 </div>
@@ -413,7 +445,7 @@ F-statistic: 69.86 on 7 and 3131 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="do-we-still-have-an-interaction" class="slide level2">
 <h2>Do we still have an interaction?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">summary</span>(modelB) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">summary</span>(modelB) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -446,19 +478,19 @@ F-statistic:  92.3 on 5 and 3133 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2>Visualizing the Interaction</h2>
 <p>Any better?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">interact_plot</span>(modelB, <span class="at">pred =</span> homeownership, <span class="at">modx =</span> median_edu, </span>
-<span id="cb22-2"><a href=""></a>              <span class="at">jnplot =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">interact_plot</span>(modelB, <span class="at">pred =</span> homeownership, <span class="at">modx =</span> median_edu, </span>
+<span id="cb24-2"><a href=""></a>              <span class="at">interval =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
 <section id="categorical-factor-predictors" class="slide level2">
 <h2>Categorical (Factor) Predictors</h2>
 <p>What if we had an interaction between two categorical predictors?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>modelC <span class="ot">&lt;-</span> <span class="fu">lm</span>(unemployment_rate <span class="sc">~</span> metro <span class="sc">+</span> median_edu <span class="sc">+</span> </span>
-<span id="cb23-2"><a href=""></a>               metro<span class="sc">:</span>median_edu, <span class="at">data =</span> county)</span>
-<span id="cb23-3"><a href=""></a></span>
-<span id="cb23-4"><a href=""></a><span class="fu">levels</span>(county<span class="sc">$</span>metro)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>modelC <span class="ot">&lt;-</span> <span class="fu">lm</span>(unemployment_rate <span class="sc">~</span> metro <span class="sc">+</span> median_edu <span class="sc">+</span> </span>
+<span id="cb25-2"><a href=""></a>               metro<span class="sc">:</span>median_edu, <span class="at">data =</span> county)</span>
+<span id="cb25-3"><a href=""></a></span>
+<span id="cb25-4"><a href=""></a><span class="fu">levels</span>(county<span class="sc">$</span>metro)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "no"  "yes"</code></pre>
 </div>
@@ -467,7 +499,7 @@ F-statistic:  92.3 on 5 and 3133 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="model-summary" class="slide level2">
 <h2>Model Summary</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="fu">summary</span>(modelC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">summary</span>(modelC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -503,11 +535,10 @@ F-statistic: 78.09 on 5 and 3133 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="visualizing-the-non-interaction" class="slide level2">
 <h2>Visualizing the (non) Interaction</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">cat_plot</span>(modelC, <span class="at">pred =</span> median_edu, <span class="at">modx =</span> metro, </span>
-<span id="cb27-2"><a href=""></a>              <span class="at">jnplot =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="fu">cat_plot</span>(modelC, <span class="at">pred =</span> median_edu, <span class="at">modx =</span> metro)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
+<img data-src="stats_modeling_week4_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
 <section id="more-statistics" class="slide level2">
 <h2>More Statistics?!</h2>
 
@@ -516,8 +547,8 @@ F-statistic: 78.09 on 5 and 3133 DF,  p-value: &lt; 2.2e-16</code></pre>
 </section>
 <section id="final-workshop-series-feedback" class="slide level2">
 <h2>Final Workshop Series Feedback</h2>
-<p>Insert QR Code</p>
-<p>You can always email me at <code>slkelly@olemiss.edu</code> or <code>slkelly@go.olemiss.edu</code></p>
+
+<img data-src="images/Stats_R_Series_Feedback.png" class="quarto-figure quarto-figure-center r-stretch"><p>You can always email me at <code>slkelly@olemiss.edu</code> or <code>slkelly@go.olemiss.edu</code></p>
 <p>Thank you for participating in <code>Stats Modeling with R</code>!</p>
 
 </section>
