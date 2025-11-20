@@ -35,3 +35,6 @@ dim(nohs_county)
 nohs_county$median_edu <- levels(nohs_county)
 
 fct_count(county$median_edu)
+
+test <- fct_collapse(county$median_edu, high_school = c("hs_diploma", "below_hs"))
+fct_count(test)
