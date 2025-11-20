@@ -50,7 +50,7 @@ corrplot(cor(county_numeric, use = "complete.obs"), method = "pie",
          type = "upper")
 ```
 
-## Exercise: Make a Corr Plot
+## Exercise: Make a Correlation Plot
 
 Look at the help menu for the `corrplot` function and change the method argument to something other than "pie".
 
@@ -63,17 +63,22 @@ corrplot(cor(county_numeric, use = "complete.obs"), method = "?",
 
 ## Next: Interactions
 
-We're going to explore a relatively new R packaged called `interactions`. You can find details at interactions.jacob-long.com. The creator of this package is a faculty member at University of South Carolina.
+We're going to explore a relatively new R package called `interactions`. You can find details at interactions.jacob-long.com. The creator of this package is a faculty member at University of South Carolina.
 
 ```{r}
 # install.packages("interactions")
 library(interactions)
 ```
 
+## What is an interaction?
+
+An interaction is when a predictor's (X) effect on the outcome (Y) varies based on the values of another predictor (Z) in your model.\
+In other words, X's effect on Y is contingent on Z.\
+An interaction is also refered to as a moderated relationship.
 
 ## Regression with an Interaction
 
-Outcome: Unemployment Rate \
+Outcome: Unemployment Rate\
 Predictors: Homeownership, Median Education, and the interaction between the two predictors
 
 ```{r}
@@ -91,7 +96,8 @@ summary(modelA)
 
 ## Visualizing the Interaction
 
-Why does this look insane? 
+Why does this look insane?
+
 ```{r}
 interact_plot(modelA, pred = homeownership, modx = median_edu, 
               jnplot = TRUE)
@@ -103,16 +109,87 @@ interact_plot(modelA, pred = homeownership, modx = median_edu,
 fct_count(county$median_edu)
 ```
 
-## County Dataset
+## Yikes. Deal with that Factor
 
-We're going to continue working with the county dataset but first we need to drop two rows prior to modeling our factors.
+We're going to continue working with the county dataset but first we need contend with that factor level issue.
 
 ```{r}
 # There are only two counties (out of 3K) 
 # with a median education less than high school. 
+# We're going to merge the "below_hs" level with "hs_diploma"
 
-nohs_county <- county |> 
-  filter(median_edu != "below_hs")
+county$median_edu <- fct_collapse(county$median_edu, 
+                                  high_school = c("hs_diploma", "below_hs"))
 
-levels(nohs_county$median_edu)
+levels(county$median_edu)
 ```
+
+## Regression Model Round 2
+
+Now we're going to run the regression with the updated factor.
+
+```{r}
+modelB <- lm(unemployment_rate ~ homeownership + median_edu + 
+               homeownership:median_edu, data = county)
+
+levels(county$median_edu) # keep this is mind
+```
+
+## Do we still have an interaction?
+
+```{r}
+summary(modelB) 
+```
+
+## Visualizing the Interaction
+
+Any better?
+
+```{r}
+interact_plot(modelB, pred = homeownership, modx = median_edu, 
+              jnplot = TRUE)
+```
+
+## Categorical (Factor) Predictors
+
+What if we had an interaction between two categorical predictors?
+
+```{r}
+modelC <- lm(unemployment_rate ~ metro + median_edu + 
+               metro:median_edu, data = county)
+
+levels(county$metro)
+```
+
+## Model Summary
+
+```{r}
+summary(modelC)
+```
+
+## Let's visualize our relationships
+
+Change the function to `cat_plot` when both the predictor and moderator are categorical.
+
+## Visualizing the (non) Interaction
+
+```{r}
+cat_plot(modelC, pred = median_edu, modx = metro, 
+              jnplot = TRUE)
+```
+
+## More Statistics?!
+
+![](images/MAL.png){width="800"}
+
+Submit a [Methods and Analysis Lab](https://libraries.olemiss.edu/services/methods-and-analysis-lab/) Consultation. It's free and we're friendly!
+
+I also teach credit-bearing statistics courses for departments
+
+## Final Workshop Series Feedback
+
+Insert QR Code
+
+You can always email me at `slkelly@olemiss.edu` or `slkelly@go.olemiss.edu`
+
+Thank you for participating in `Stats Modeling with R`!
